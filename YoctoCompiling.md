@@ -12,7 +12,7 @@
 
 - https://www.youtube.com/playlist?list=PLEBQazB0HUyTpoJoZecRK6PpDG31Y7RPB
 - https://www.digikey.com/en/maker/projects/intro-to-embedded-linux-part-2-yocto-project/2c08a1ad09d74f20b9844e566d332da
-- https://www.cocoacrumbs.com/blog/2021-10-15-building-a-linux-distro-for-the-stm32mp157f-dk2/
+- https://www.cocoacrumbs.com/blog/2021-10-15-building-a-linux-distro-for-the-stm32mp157a-dk1/
 - https://bootlin.com/blog/building-a-linux-system-for-the-stm32mp1-basic-system/
 
 ### Required Hardware
@@ -214,10 +214,10 @@ While it is possible to format partitions manually, there is a script that does 
 ```
 cd ~/Projects/yocto/build-mp1/tmp/deploy/images/stm32mp1/scripts
 ```
-A _create_sdcard_from_flashlayout.sh_ script can be found in that folder. Let us choose _FlashLayout_sdcard_stm32mp157f-dk2-extensible.tsv_ to create the image by executing this command line:
+A _create_sdcard_from_flashlayout.sh_ script can be found in that folder. Let us choose _FlashLayout_sdcard_stm32mp157a-dk1-extensible.tsv_ to create the image by executing this command line:
 
 ```
-./create_sdcard_from_flashlayout.sh ../flashlayout_core-image-minimal/extensible/FlashLayout_sdcard_stm32mp157f-dk2-extensible.tsv
+./create_sdcard_from_flashlayout.sh ../flashlayout_core-image-minimal/extensible/FlashLayout_sdcard_stm32mp157a-dk1-extensible.tsv
 ```
    
 ### 2.2 Flashing the Image to SD Card
@@ -229,7 +229,7 @@ Navigate to the output directory for your images:
 ```
 cd ~/Projects/yocto/build-mp1/tmp/deploy/images/stm32mp
 ```
-From here, you can figure out which image files ST would use to flash an SD card by looking at the flashlayout_core-image-minimal/trusted/FlashLayout_sdcard_stm32mp157f-dk2-trusted.tsv file in a text editor.
+From here, you can figure out which image files ST would use to flash an SD card by looking at the flashlayout_core-image-minimal/trusted/FlashLayout_sdcard_stm32mp157a-dk1-trusted.tsv file in a text editor.
 
 ```
 gedit flashlayout_core-image-minimal/trusted/FlashLayout_sdcard_stm32mp157a-dk1-trusted.tsv
@@ -270,7 +270,7 @@ You can confirm that the changes were made by entering the `lsblk` command again
 Now we can flash the SD card:
 
 ```
-sudo dd if =../flashlayout_core-image-minimal/extensible/../../FlashLayout_sdcard_stm32mp157f-dk2-extensible.raw of=/dev/mmcblk0 bs=8M conv=fdatasync status=progress oflag=direct
+sudo dd if =../flashlayout_core-image-minimal/extensible/../../FlashLayout_sdcard_stm32mp157a-dk1-extensible.raw of=/dev/mmcblk0 bs=8M conv=fdatasync status=progress oflag=direct
 ```
    
    ![partitions_script](https://user-images.githubusercontent.com/56772428/210804435-2c17f96e-ec67-4cf3-a7e0-8f4d26922a5d.jpeg)
@@ -321,12 +321,12 @@ The first line will append the typical GCC build tools. The second line will add
 
 Also, pay attention to syntax changes in newer versions while changing build configurations: https://docs.yoctoproject.org/next/migration-guides/migration-3.4.html
 
-Now rebuild the Linux system and flash it to an SD Card (you can follow 1.5 and 2.1). If all went well, you can now use GCC and the Nano editor natively on your STM32MP157F-DK2 board.
+Now rebuild the Linux system and flash it to an SD Card (you can follow 1.5 and 2.1). If all went well, you can now use GCC and the Nano editor natively on your stm32mp157a-dk1 board.
 
 
 # Creating Custom Layer and Image
 
-Until now, we built our Linux image, flashed it onto an SD card and boot into Linux on the STM32MP157F-DK2 board. In this chapter, we will walk through the process of creating your own layer in the Yocto project and using it to make changes to the Linux image. Specifically, we will expand the rootfs size (to give you more space for modules, packages, and applications).
+Until now, we built our Linux image, flashed it onto an SD card and boot into Linux on the stm32mp157a-dk1 board. In this chapter, we will walk through the process of creating your own layer in the Yocto project and using it to make changes to the Linux image. Specifically, we will expand the rootfs size (to give you more space for modules, packages, and applications).
 
 ### 5.1 Default Image Recipes
 
@@ -585,7 +585,7 @@ sudo dd if =../flashlayout_custom-image/extensible/../../FlashLayout_sdcard_stm3
 
 #### 7.2.1 I<sup>2</sup>C Tools and Sensor Connection
 
-Plug the SD card into your STM32MP157F-DK2 and boot it up. Connect to the serial terminalwith the following (you may need to change ttyACM1 to some other device file):
+Plug the SD card into your stm32mp157a-dk1 and boot it up. Connect to the serial terminalwith the following (you may need to change ttyACM1 to some other device file):
 
 ```
 sudo picocom -b 115200 /dev/ttyACM1
@@ -616,7 +616,7 @@ If all goes well, you should see 0x33 being reported on the bus, which means you
 
 #### 7.2.2 FDCAN Initialisation and Loopback Test
 
-To communicate with the CAN-FD bus on your STM32MP157F-DK2 board, you can refer to the following tutorial: https://github.com/darkquesh/stm32mp1/blob/main/fdcan.md
+To communicate with the CAN-FD bus on your stm32mp157a-dk1 board, you can refer to the following tutorial: https://github.com/darkquesh/stm32mp1/blob/main/fdcan.md
 
 # Compiling QT Framework for creation of GUI
 ### Download the layer for Qt5  
@@ -664,9 +664,9 @@ sudo dd if =../flashlayout_custom-image/extensible/../../FlashLayout_sdcard_stm3
 
 [1] STM32MP15 Discovery kits - getting started, STMicroelectronics Wiki, https://wiki.st.com/stm32mpu/wiki/STM32MP15_Discovery_kits_-_getting_started
   
-[2] STM32MP157F-DK2 User Manual, STMicroelectronics, https://www.st.com/resource/en/user_manual/um2637-discovery-kits-with-increasedfrequency-800-mhz-stm32mp157-mpus-stmicroelectronics.pdf
+[2] stm32mp157a-dk1 User Manual, STMicroelectronics, https://www.st.com/resource/en/user_manual/um2637-discovery-kits-with-increasedfrequency-800-mhz-stm32mp157-mpus-stmicroelectronics.pdf
   
-[3] STM32MP157F-DK2 Reference Manual, STMicroelectronics, https://www.st.com/resource/en/reference_manual/dm00327659-stm32mp157-advanced-arm-based-32-bit-mpus-stmicroelectronics.pdf
+[3] stm32mp157a-dk1 Reference Manual, STMicroelectronics, https://www.st.com/resource/en/reference_manual/dm00327659-stm32mp157-advanced-arm-based-32-bit-mpus-stmicroelectronics.pdf
   
 [4] Yocto Project Reference Manual, Linux Foundation and Yocto Project, https://docs.yoctoproject.org/ref-manual/index.html
   
