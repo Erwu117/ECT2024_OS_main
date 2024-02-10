@@ -113,7 +113,7 @@ To start using bitbake you need to source the "oe-init-build-env" script located
 
 ```
 cd ~/Projects/yocto
-source poky/oe-init-build-env build-mp
+source poky/oe-init-build-env build-mp1
 ```
 You can view the layers that will be included in the build with the following:
 
