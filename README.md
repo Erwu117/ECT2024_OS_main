@@ -2,4 +2,5 @@
 
 ## Tutorials for using github
 https://www.datacamp.com/tutorial/git-push-pull
-###### _Use the Desktop version method_
+<br>
+_Use the Desktop version method_
