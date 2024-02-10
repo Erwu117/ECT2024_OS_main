@@ -181,14 +181,14 @@ Now, it is time to actually build your image! We need to choose an image to buil
 For now, we won’t need any extra packages, so we’ll skip adding the OpenSTLinux layer and just focus on the bare minimum, which is provided by the core-image-minimal image. Once you have everything configured to your liking, just run the following command:
 
 ```
-bitbake core-image-minimal
+bitbake core-image-weston
 ```
 The first time you build an image with bitbake, it will likely take many hours (the first build might take around 2-3 hours). One big advantage of the Yocto Project is that it builds everything in stages and layers. If you make any changes (e.g. add a layer, change to a different image, tweak kernel settings), subsequent builds will take far less time. This speeds up development process when you are trying to add low-level support in Linux.
 
 If you want to start over (e.g. you press ’ctrl + c’ or something gets corrupted/tainted)
 
 ```
-bitbake -c cleanall core-image-minimal
+bitbake -c cleanall core-image-weston
 ```
 To clean out everything
 
@@ -314,6 +314,8 @@ Add the following lines:
 IMAGE_INSTALL:append = " packagegroup-core-buildessential"
 IMAGE_INSTALL:append = " nano"
 IMAGE_INSTALL:append = " apt"
+IMAGE_INSTALL:append = " i2c-tools"
+IMAGE_INSTALL:append = " libgpiod libgpiod-dev libgpiod-tools"
 ```
 The first line will append the typical GCC build tools. The second line will add the Nano editor (in case you prefer not to work with the VI editor that is part of the minimal Linux system).
 
@@ -432,11 +434,11 @@ On your host computer, navigate to the build directory and copy the device tree 
 
 ```
 cd ~/Projects/yocto/build-mp1/
-cp tmp/work-shared/stm32mp1/kernel-source/arch/arm/boot/dts/stm32mp157f-dk2.dts
+cp tmp/work-shared/stm32mp1/kernel-source/arch/arm/boot/dts/stm32mp157a-dk1.dts
 ~/Documents
 cd ~/Documents
-cp stm32mp157f-dk2.dts stm32mp157f-dk2.dts.orig
-gedit stm32mp157f-dk2.dts
+cp stm32mp157a-dk1.dts stm32mp157a-dk1.dts.orig
+gedit stm32mp157a-dk1.dts
 ```
 
 ### 6.2 Enable I<sup>2</sup>C and FDCAN
