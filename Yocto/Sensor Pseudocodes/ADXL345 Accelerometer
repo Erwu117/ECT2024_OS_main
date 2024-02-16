@@ -1,0 +1,39 @@
+reference: https://pimylifeup.com/raspberry-pi-accelerometer-adxl345/
+
+install via Cmd: 
+-   sudo pip3 install adafruit-circuitpython-ADXL34x
+
+initialize new python script: nano ~/accelerometer.py
+
+
+inport libraries:
+-   Time    - put the script to sleep for a short period (idle time between each readings).
+-   board - designed to quickly know what pins are available on a device.
+-   busio -  handling the I2C serial protocol.
+-   adafruit_adxl34x -accelerometer model
+-   csv - puts logged data into csv in order to data log
+
+initialize i2c interface:
+        accelerometer = adafruit_adxl34x.ADXL345(i2c)
+
+script to read accelerometer data
+
+def accelerometer_data(accelerometer):
+
+    while True:
+        acceleration = accelerometer.acceleration //reads acceleration in x,y,z in terms of g
+        meter_per_second converter = acceleration*9.8 // converts accelerometer data in g
+        //send to data to GUI 
+        time.sleep(0.5) // subject to calibration
+
+
+def data_logger():
+
+    // function to log data into csv file
+
+
+things to calibrate:
+
+-   sleep time
+-   frequency of data logging
+-   accelerometer readings and conversion from g to  m/s or to km/s
