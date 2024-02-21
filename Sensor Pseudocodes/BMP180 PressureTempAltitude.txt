@@ -1,0 +1,40 @@
+To Do:
+    -Adjust sleep time as necessary
+    -Send data to gui and through the API
+    -adjust sea_level_pressure depending on location
+
+References:
+    https://github.com/jposada202020/CircuitPython_BMP180
+    https://www.raspberrypi-spy.co.uk/2015/04/bmp180-i2c-digital-barometric-pressure-sensor/
+
+Install: 
+    pip install adafruit-circuitpython-bmp180
+Initialize:
+    nano bmp180.py
+
+Import:
+    time - sleep script in between readings
+    bmp180 - import sensor
+    board - reference raspberry pi
+
+Code:
+    i2c = board.I2C()
+    bmp = bmp180.BMP180(i2c)
+
+    # change this to match the location's pressure (hPa) at sea level
+    bmp.sea_level_pressure = 1013.25 //Necessary to get accurate altitude readings
+
+    while True:
+        bmp_tempc = bmp.temperature
+        bmp_pressure = bmp.pressure
+        bmp_altitude = bmp.altitude
+
+
+        //Change to send data where it is needed
+        print(f"Temperature: {bmp.temperature:.1f} °C")
+        print(f"Pressure: {bmp.pressure:.1f} hPa")
+        print(f"Altitude: {bmp.altitude:.1f} mts")
+        print("")
+
+
+        time.sleep(2) //Adjust time as necessary
