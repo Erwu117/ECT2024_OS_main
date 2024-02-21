@@ -1,3 +1,52 @@
+To Do:
+    -Complete RPI Online first
+
 Reference:
     https://www.instructables.com/Raspberry-Pi-Nodejs-Blynk-App-DHT11DHT22AM2302/
 
+//install sensor libraries
+    wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.46.tar.gz
+    tar zxvf bcm2835-1.46.tar.gz
+    cd bcm2835-1.46
+    ./configure
+    make
+    sudo make check
+    sudo make install
+    sudo npm install -g node-dht-sensor
+
+//Create Blynk Project
+
+//Blynk to DHT11
+    /wiring
+        GND to GND
+        sensor signal to gpio4
+        sensor vcc to 3.3v
+    /code (replace: YOUR_AUTH_TOKEN, sensorType, sensorPin)
+        var blynkLib = require('blynk-library');
+        var sensorLib = require('node-dht-sensor');
+
+        var AUTH = 'YOUR_AUTH_TOKEN';
+
+        // Setup Blynk
+        var blynk = new blynkLib.Blynk(AUTH);
+
+        // Setup sensor, exit if failed
+        var sensorType = 11; // 11 for DHT11, 22 for DHT22 and AM2302
+        var sensorPin  = 4;  // The GPIO pin number for sensor signal
+        if (!sensorLib.initialize(sensorType, sensorPin)) {
+            console.warn('Failed to initialize sensor');
+            process.exit(1);
+        }
+
+        // Automatically update sensor value every 2 seconds
+        setInterval(function() {
+            var readout = sensorLib.read();
+            blynk.virtualWrite(3, readout.temperature.toFixed(1));
+            blynk.virtualWrite(4, readout.humidity.toFixed(1));
+            
+            console.log('Temperature:', readout.temperature.toFixed(1) + 'C');
+            console.log('Humidity:   ', readout.humidity.toFixed(1)    + '%');
+        }, 2000);
+
+//Command
+    sudo NODE_PATH=/usr/local/lib/node_modules node ./blynk-sensor-test.js
