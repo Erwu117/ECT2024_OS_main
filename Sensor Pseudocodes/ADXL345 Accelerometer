@@ -7,7 +7,7 @@ install via Cmd:
 initialize new python script: nano ~/accelerometer.py
 
 
-inport libraries:
+import libraries:
 -   Time    - put the script to sleep for a short period (idle time between each readings).
 -   board - designed to quickly know what pins are available on a device.
 -   busio -  handling the I2C serial protocol.
