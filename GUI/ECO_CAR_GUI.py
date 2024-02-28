@@ -1,13 +1,15 @@
 import tkinter as tk
-import customtkinter
+from tkinter import ttk
 from PIL import Image, ImageTk
-import math
 import time
 import tkintermapview
 import smbus2
-from bmp180 import BMP180
-import adafruit_dht
-import board
+import bme280
+
+# Initialize the bus for BME280
+bus = smbus2.SMBus(1)  # Use the appropriate bus number
+address = 0x76  # BME280 default address
+calibration_params = bme280.load_calibration_params(bus, address)
 
 app = tk.Tk()
 app.title("CAR GUI")
@@ -16,23 +18,46 @@ app.configure(bg='white')
 screen_width = 480
 screen_height = 320
 
-bus = smbus2.SMBus(1)
-bmp180 = BMP180(bus)
+# Global variables
+current_color = 'black'
+yellow_filled = False
+speed = 0
+speed2 = 0
+speaker_filled = False
+warning_filled = False
+is_glowing = False
+glow_after_id = None
+is_glowing2 = False
+glow_after_id2 = None
 
-bmp180.oversample_sett = 2
-bmp180.baseline = 101325
+def celsius_to_fahrenheit(celsius):
+    return (celsius * 9/5) + 32
 
-temperature = bmp180.get_temperature()
-
-def Degree_functionchange(event=None):
+# Corrected Degree_functionchange to use global temperature reading
+def Degree_functionchange():
+    global temperature_celsius  # Assuming you have a mechanism to update this variable periodically
+    temperature = celsius_to_fahrenheit(temperature_celsius)
     label5.config(text=str(temperature))
-
+    # Adjust label position based on temperature length
     if len(str(temperature)) == 2:
         label5.place(relx=0.45, rely=0.87)
     elif len(str(temperature)) > 2:  
         label5.place(relx=0.43, rely=0.87)  
     else:
-        label5.place(relx=0.47, rely=0.87) 
+        label5.place(relx=0.47, rely=0.87)
+
+# Schedule sensor reading and GUI update
+def update_sensor_data():
+    try:
+        data = bme280.sample(bus, address, calibration_params)
+        global temperature_celsius
+        temperature_celsius = data.temperature
+        # Optionally update pressure and humidity if needed
+        Degree_functionchange()  # Update the temperature display
+        app.after(1000, update_sensor_data)  # Schedule next sensor read
+    except Exception as e:
+        print('Sensor read failed:', e)
+
 def update_speed(event=None):
     global speed
     speed += 1 
@@ -325,6 +350,6 @@ app.bind('<KeyPress-Down>', speaker_function)
 app.bind('<KeyPress-6>', warning_function)
 Degree_functionchange()
 app.focus_set()
-
+update_sensor_data()
 update_label()
 app.mainloop()
