@@ -1,9 +1,7 @@
 import tkinter as tk
-import customtkinter
-from PIL import Image, ImageTk
-import math
 import time
 import tkintermapview
+import math
 import smbus2
 from bmp180 import BMP180
 import adafruit_dht
@@ -11,51 +9,51 @@ import board
 
 app = tk.Tk()
 app.title("CAR GUI")
-app.geometry("480x320")
+app.geometry("800x480")
 app.configure(bg='white')
-screen_width = 480
-screen_height = 320
+screen_width = 800
+screen_height = 480
+dht_device = adafruit_dht.DHT11(board.D4)
+temperature_c = dht_device.temperature
 
-bus = smbus2.SMBus(1)
-bmp180 = BMP180(bus)
-
-bmp180.oversample_sett = 2
-bmp180.baseline = 101325
-
-temperature = bmp180.get_temperature()
 
 def Degree_functionchange(event=None):
-    label5.config(text=str(temperature))
+    label5.config(text=str(temperature_c))
 
-    if len(str(temperature)) == 2:
-        label5.place(relx=0.45, rely=0.87)
-    elif len(str(temperature)) > 2:  
-        label5.place(relx=0.43, rely=0.87)  
+    if len(str(temperature_c)) == 2:
+        label5.place(relx=0.46, rely=0.86)
+    elif len(str(temperature_c)) > 2:  
+        label5.place(relx=0.44, rely=0.86)  
     else:
-        label5.place(relx=0.47, rely=0.87) 
+        label5.place(relx=0.47, rely=0.86) 
+
+    
 def update_speed(event=None):
     global speed
-    speed += 1 
-    label.config(text=str(speed))
+    if speed < 160:
+        speed += 1 
+        speedometer.itemconfigure(label, text=str(speed))
 
     if len(str(speed)) == 2:
-        label.place(relx=0.139, rely=0.67) 
+        speedometer.coords(label, 125, 105)
     elif len(str(speed)) > 2:  
-        label.place(relx=0.118, rely=0.67)  
+        speedometer.coords(label, 124, 105)
     else:
-        label.place(relx=0.167, rely=0.67) 
+        speedometer.coords(label, 127, 105,)
+    update_speedometer()
 def lower_speed(event=None):
     global speed
     if speed > 0:
         speed -= 1  
-        label.config(text=str(speed))
+        speedometer.itemconfigure(label, text=str(speed))
 
     if len(str(speed)) == 2:
-        label.place(relx=0.139, rely=0.67) 
+        speedometer.coords(label, 125, 105)
     elif len(str(speed)) > 2:  
-        label.place(relx=0.118, rely=0.67) 
+        speedometer.coords(label, 124, 105)
     else:
-        label.place(relx=0.167, rely=0.67) 
+        speedometer.coords(label, 127, 105)
+    update_speedometer()
 def update_batt(event=None):
     global speed2
     if speed2 <100:
@@ -63,11 +61,11 @@ def update_batt(event=None):
         label3.config(text=str(speed2))
 
     if len(str(speed2)) == 2:
-        label3.place(relx=0.767, rely=0.67) 
+        label3.place(relx=0.771, rely=0.65) 
     elif len(str(speed2)) > 2:  
-        label3.place(relx=0.746, rely=0.67)  
+        label3.place(relx=0.751, rely=0.65)  
     else:
-        label3.place(relx=0.79, rely=0.67) 
+        label3.place(relx=0.79, rely=0.65) 
 def lower_batt(event=None):
     global speed2
     if speed2 > 0:
@@ -75,11 +73,11 @@ def lower_batt(event=None):
         label3.config(text=str(speed2))
 
     if len(str(speed2)) == 2:
-        label3.place(relx=0.767, rely=0.67) 
+        label3.place(relx=0.771, rely=0.65) 
     elif len(str(speed2)) > 2:  
-        label3.place(relx=0.746, rely=0.67) 
+        label3.place(relx=0.751, rely=0.65) 
     else:
-        label3.place(relx=0.79, rely=0.67) 
+        label3.place(relx=0.79, rely=0.65) 
 
 def left_lane(event=None):
     global is_glowing
@@ -156,7 +154,7 @@ def N_function(event):
 
 def D_function(event):
     reset_labels()
-    labelD.config(fg='Green')
+    labelD.config(fg='Dark Green')
 def light_function(event=None):
     global yellow_filled
     if yellow_filled:
@@ -192,7 +190,14 @@ def warning_function(event=None):
     else:
         canvas5.itemconfig(warning1, fill='#FDDA0D')
     warning_filled = not warning_filled
+def update_speedometer():
+    angle = math.radians(135 + (speed / max_speed) * 360)
+    x = center_x + radius * math.cos(angle)
+    y = center_y + radius * math.sin(angle)
+    speedometer.coords(speed_indicator, center_x, center_y, x, y)
 
+
+max_speed = 200     
 current_color = 'black' 
 yellow_filled = False
 speed = 0
@@ -201,26 +206,22 @@ speaker_filled = False
 warning_filled = False
 degree = 0
 
-map_widget= tkintermapview.TkinterMapView(app,width=480, height=180, corner_radius=0)
+map_widget= tkintermapview.TkinterMapView(app,width=800, height=240, corner_radius=0)
 map_widget.pack()
 
 map_widget.set_position(-8.8952780, 116.3058330)
 map_widget.set_zoom(100)
 
 
-speedometer = tk.Canvas(app, width=200, height=200,bg='white', highlightthickness=0)
-speedometer.place(relx=0.03, rely=0.57)
-speedometer2 = tk.Canvas(app, width=77, height=80,bg='white', highlightthickness=0)
-speedometer2.place(relx=0.116, rely=0.85)
-fixspeed = tk.Canvas(app, width=70, height=50,bg='white', highlightthickness=0)
-fixspeed.place(relx=0.125, rely=0.95)
+speedometer = tk.Canvas(app, width=400, height=300,bg='white', highlightthickness=0)
+speedometer.place(relx=0.03, rely=0.5)
+rspeedometer = tk.Canvas(app, width=400, height=400,bg='white', highlightthickness=0)
+rspeedometer.place(relx=0.65, rely=0.5)
+rspeedometer2 = tk.Canvas(app, width=145, height=240,bg='white', highlightthickness=0)
+rspeedometer2.place(relx=0.724, rely=0.776)
+rfixspeed = tk.Canvas(app, width=150, height=80,bg='white', highlightthickness=0)
+rfixspeed.place(relx=0.72, rely=0.95)
 
-rspeedometer = tk.Canvas(app, width=200, height=200,bg='white', highlightthickness=0)
-rspeedometer.place(relx=0.655, rely=0.57)
-rspeedometer2 = tk.Canvas(app, width=77, height=80,bg='white', highlightthickness=0)
-rspeedometer2.place(relx=0.741, rely=0.85)
-rfixspeed = tk.Canvas(app, width=70, height=50,bg='white', highlightthickness=0)
-rfixspeed.place(relx=0.75, rely=0.95)
 
 
 
@@ -229,7 +230,7 @@ canvas.place(relx=0.39,rely=0.66)
 canvas2 = tk.Canvas(app, width=20, height=20, bg='white', highlightthickness=0)
 canvas2.place(relx=0.59,rely=0.66)
 canvas3 = tk.Canvas(app, width=20, height=20, bg='white', highlightthickness=0)
-canvas3.place(relx=0.52,rely=0.66)
+canvas3.place(relx=0.53,rely=0.66)
 canvas4 = tk.Canvas(app, width=20, height=20, bg='white', highlightthickness=0)
 canvas4.place(relx=0.43,rely=0.66)
 canvas5 = tk.Canvas(app, width=20, height=20, bg='white', highlightthickness=0)
@@ -261,33 +262,54 @@ glow_after_id2 = None
 
 
 
-custom_font= ("Montserrat", 29,)
-custom_font2= ("Montserrat", 10, "bold")
-custom_font3= ("Montserrat", 13, "bold")
+custom_font= ("Montserrat", 40,)
+custom_font2= ("Montserrat", 13, "bold")
+custom_font3= ("Montserrat", 18, "bold")
 
 
-speedometer.create_arc(15, 10, 145, 145, start=-45, extent=270, outline="black", width=3)
-speedometer.create_arc(25, 15, 135, 135, start=-45, extent=270, outline="black", width=3)
-speedometer2.create_arc(5, 20, 70, 60, start=-45, extent=270, outline="black", width=3)
-speedometer2.create_arc(10, 25, 65, 65, start=-45, extent=270, outline="black", width=3)
+speedometer.create_oval(15, 5, 235, 235,  outline="black", width=3)
+speedometer.create_oval(25, 10, 225, 225,  outline="black", width=3)
 
-rspeedometer.create_arc(15, 10, 145, 145, start=-45, extent=270, outline="black", width=3)
-rspeedometer.create_arc(25, 15, 135, 135, start=-45, extent=270, outline="black", width=3)
-rspeedometer2.create_arc(5, 20, 70, 60, start=-45, extent=270, outline="black", width=3)
-rspeedometer2.create_arc(10, 25, 65, 65, start=-45, extent=270, outline="black", width=3)
+num_intervals = 10
+line_length = 30
 
-label = tk.Label(app, text="0", bg = 'white',font=custom_font)
-label2 = tk.Label(app, text="km/hr", bg = 'white',font=custom_font2)
-label.place(relx= 0.166, rely=0.67)
-label2.place(relx= 0.15, rely=0.805)
+interval_angle = 360 / num_intervals
+
+radius = (200) / 2
+center_x = (250) / 2
+center_y = (235) / 2
+
+for i in range(num_intervals + 1):
+    angle = math.radians(135 + i * interval_angle)
+    x = center_x + radius * math.cos(angle)
+    y = center_y + radius * math.sin(angle)
+    x_end = center_x + (radius - line_length) * math.cos(angle)
+    y_end = center_y + (radius - line_length) * math.sin(angle)
+    speedometer.create_line(x, y, x_end, y_end, fill='black', width=2)
+
+# Draw the speed indicator
+
+rspeedometer.create_arc(15, 10, 245, 245, start=-45, extent=270, outline="black", width=3)
+rspeedometer.create_arc(25, 15, 235, 235, start=-45, extent=270, outline="black", width=3)
+
+
+
+rspeedometer2.create_arc(-10, 65, 150, 150, start=-45, extent=270, outline="black", width=3)
+rspeedometer2.create_arc(0, 70, 140, 155, start=-45, extent=270, outline="black", width=3)
+
+label = speedometer.create_text(127, 105, text="0", fill='black', font=custom_font)
+label2 = speedometer.create_text(126, 150, text="km/hr", fill='black', font=custom_font2)
+
+speed_indicator = speedometer.create_line(center_x, center_y, center_x, center_y, fill='red', width=1.5)
+speed_indicatordot = speedometer.create_oval(125,118, 125, 118, fill='red', width = 3)
 
 label3 = tk.Label(app, text="0", bg = 'white',font=custom_font)
 label4 = tk.Label(app, text=" % ", bg = 'white',font=custom_font3)
-label3.place(relx= 0.79, rely=0.67)
-label4.place(relx= 0.79, rely=0.805)
+label3.place(relx= 0.79, rely=0.65)
+label4.place(relx= 0.79, rely=0.78)
 
 label5 = tk.Label(app, text="0", bg = 'white',font=custom_font3)
-label5.place(relx= 0.47, rely=0.87)
+label5.place(relx= 0.47, rely=0.86)
 label6 = tk.Label(app, text="°C", bg = 'white',font=custom_font2)
 label6.place(relx= 0.495, rely=0.875)
 
@@ -302,10 +324,10 @@ labelN.place(relx= 0.505, rely=0.8)
 labelD.place(relx= 0.535, rely=0.8)
 
 timelabel = tk.Label(app, bg= 'white', font=custom_font2 )
-timelabel.place(relx=0.447, rely=0.582)
+timelabel.place(relx=0.456, rely=0.582)
 
 ReadyLabel = tk.Label(app, text="READY", bg = 'white',font=custom_font2)
-ReadyLabel.place(relx= 0.455, rely=0.73)
+ReadyLabel.place(relx= 0.463, rely=0.73)
 
 
 
