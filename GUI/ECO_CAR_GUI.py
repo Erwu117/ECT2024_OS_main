@@ -4,7 +4,6 @@ from PIL import Image, ImageTk
 import math
 import time
 import tkintermapview
-import math
 import smbus2
 import bme280
 
