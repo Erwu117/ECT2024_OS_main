@@ -3,15 +3,11 @@ import tkinter as tk
 import math
 import tkintermapview
 import time
+import board
 
 #Imports for BME280
 import smbus2
 import bme280
-
-#Imports for ADXL345 Accelerometer
-import board
-import busio
-import adafruit_adxl34x
 
 #Imports for MPU6050
 import smbus
@@ -46,10 +42,6 @@ bus = smbus2.SMBus(1)  # Use the appropriate bus number
 address = 0x76  # BME280 default address
 calibration_params = bme280.load_calibration_params(bus, address)
 
-
-# Initialize ADXL345 Accelerometer
-i2c = busio.I2C(board.SCL, board.SDA)
-accelerometer = adafruit_adxl34x.ADXL345(i2c)
 
 # Initialize MPU6050
 mpu6050_bus = smbus.SMBus(1)  # If it's the same physical bus as BME280, consider using just one bus variable
@@ -96,6 +88,13 @@ def update_temperature():
     except Exception as e:
         print('Sensor read failed:', e)
 
+def update_humidity():
+    try:
+        global humidity
+        humidity = dht_device.humidity
+        app.after(1000, update_humidity)
+    except Exception as e:
+        print('Sensor read failed:', e)
 
 def update_speed(event=None): #In Progress
     global speed
@@ -153,7 +152,7 @@ def read_raw_data(addr):
 	return value
 
 def read_accel(): # MPU6050
-    global accel
+    global accel, Ax, Ay, Az
 
     acc_x = read_raw_data(ACCEL_XOUT_H)
     acc_y = read_raw_data(ACCEL_YOUT_H)
@@ -164,7 +163,8 @@ def read_accel(): # MPU6050
     Az = (acc_z/16384.0) * 9.80665
 
 
-    accel = math.sqrt(Ax**2 + Ay**2 + Az**2)
+    
+    # accel = math.sqrt(Ax**2 + Ay**2 + Az**2)
 
     formatted_accel = "{:.2f}".format(accel)
 
