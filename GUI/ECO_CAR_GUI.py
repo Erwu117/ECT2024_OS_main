@@ -1,13 +1,24 @@
+#Imports for GUI
 import tkinter as tk
-import time
+import math
 import tkintermapview
 import time
-import math
-import adafruit_dht
-import board
 
+#Imports for BME280
 import smbus2
 import bme280
+
+#Imports for ADXL345 Accelerometer
+import board
+import busio
+import adafruit_adxl34x
+
+#Imports for MPU6050
+import smbus
+
+#Import for DHT11
+import adafruit_dht
+
 
 app = tk.Tk()
 app.title("CAR GUI")
@@ -16,15 +27,10 @@ app.configure(bg='white')
 screen_width = 800
 screen_height = 480
 
-# Initialize the bus for BME280
-bus = smbus2.SMBus(1)  # Use the appropriate bus number
-address = 0x76  # BME280 default address
-calibration_params = bme280.load_calibration_params(bus, address)
-
-
 # Global variables
 current_color = 'black'
 yellow_filled = False
+accel = 0
 speed = 0
 speed2 = 0
 speaker_filled = False
@@ -35,8 +41,39 @@ is_glowing2 = False
 glow_after_id2 = None
 temperature_celsius = 0
 
+# Initialize the bus for BME280s
+bus = smbus2.SMBus(1)  # Use the appropriate bus number
+address = 0x76  # BME280 default address
+calibration_params = bme280.load_calibration_params(bus, address)
+
+
+# Initialize ADXL345 Accelerometer
+i2c = busio.I2C(board.SCL, board.SDA)
+accelerometer = adafruit_adxl34x.ADXL345(i2c)
+
+# Initialize MPU6050
+mpu6050_bus = smbus.SMBus(1)  # If it's the same physical bus as BME280, consider using just one bus variable
+Device_Address = 0x68  # MPU6050 device address
+# MPU6050 Registers
+PWR_MGMT_1 = 0x6B
+SMPLRT_DIV = 0x19
+CONFIG = 0x1A
+GYRO_CONFIG = 0x1B
+ACCEL_CONFIG = 0x1C
+INT_ENABLE = 0x38
+ACCEL_XOUT_H = 0x3B
+ACCEL_YOUT_H = 0x3D
+ACCEL_ZOUT_H = 0x3F
+GYRO_XOUT_H = 0x43
+GYRO_YOUT_H = 0x45
+GYRO_ZOUT_H = 0x47
+
+
+# Initialize DHT11
+dht_device = adafruit_dht.DHT11(board.D4)
+
 def celsius_to_fahrenheit(celsius):
-    return (celsius * 9/5) + 32
+    return round((celsius * 9/5) + 32, 2)
 
 def Degree_functionchange():
     global temperature_celsius  # Assuming you have a mechanism to update this variable periodically
@@ -50,43 +87,92 @@ def Degree_functionchange():
     else:
         label5.place(relx=0.47, rely=0.87)
 
-def update_sensor_data():
+def update_temperature():
     try:
-        data = bme280.sample(bus, address, calibration_params)
         global temperature_celsius
-        temperature_celsius = data.temperature
-        Degree_functionchange()  
-        app.after(1000, update_sensor_data)  
+        temperature_celsius = dht_device.temperature
+        Degree_functionchange()
+        app.after(1000, update_temperature)
     except Exception as e:
         print('Sensor read failed:', e)
 
 
-def update_speed(event=None):
+def update_speed(event=None): #In Progress
     global speed
-    if speed < 160:
-        speed += 1 
-        speedometer.itemconfigure(label, text=str(speed))
 
-    if len(str(speed)) == 2:
+    # magnitude = math.sqrt(sum(a**2 for a in speed))
+
+    # speed = magnitude
+
+    speed_str = "{:.2f}".format(speed)
+    if speed < 160:
+        speedometer.itemconfigure(label, text=str(speed_str))
+
+    if len(str(speed_str)) == 2:
         speedometer.coords(label, 125, 105)
-    elif len(str(speed)) > 2:  
+    elif len(str(speed_str)) > 2:  
         speedometer.coords(label, 124, 105)
     else:
         speedometer.coords(label, 127, 105,)
-    update_speedometer()
-def lower_speed(event=None):
-    global speed
-    if speed > 0:
-        speed -= 1  
-        speedometer.itemconfigure(label, text=str(speed))
+    
+    angle = math.radians(135 + (speed / max_speed) * 360)
+    x = center_x + radius * math.cos(angle)
+    y = center_y + radius * math.sin(angle)
+    speedometer.coords(speed_indicator, center_x, center_y, x, y)
 
-    if len(str(speed)) == 2:
-        speedometer.coords(label, 125, 105)
-    elif len(str(speed)) > 2:  
-        speedometer.coords(label, 124, 105)
-    else:
-        speedometer.coords(label, 127, 105)
-    update_speedometer()
+def MPU_Init():
+    # Wake-up the MPU6050
+    bus.write_byte_data(Device_Address, PWR_MGMT_1, 0)
+    
+    # Write to sample rate register
+    bus.write_byte_data(Device_Address, SMPLRT_DIV, 7)
+    
+    # Write to power management register to wake up the MPU6050
+    bus.write_byte_data(Device_Address, PWR_MGMT_1, 1)
+    
+    # Write to Configuration register
+    bus.write_byte_data(Device_Address, CONFIG, 0)
+    
+    # Write to Gyro configuration register to set full-scale range
+    # Example: ±250 degrees/second (0x00)
+    bus.write_byte_data(Device_Address, GYRO_CONFIG, 0x00)
+    
+    # Write to Accel configuration register to set full-scale range
+    # Example: ±2g (0x00)
+    bus.write_byte_data(Device_Address, ACCEL_CONFIG, 0x00)
+    
+    # Write to interrupt enable register
+    bus.write_byte_data(Device_Address, INT_ENABLE, 1)
+
+def read_raw_data(addr):
+	high = bus.read_byte_data(Device_Address, addr)
+	low = bus.read_byte_data(Device_Address, addr+1)
+	value = ((high << 8) | low)
+	if(value > 32768):
+			value -= 65536
+	return value
+
+def read_accel(): # MPU6050
+    global accel
+
+    acc_x = read_raw_data(ACCEL_XOUT_H)
+    acc_y = read_raw_data(ACCEL_YOUT_H)
+    acc_z = read_raw_data(ACCEL_ZOUT_H)
+
+    Ax = (acc_x/16384.0) * 9.80665
+    Ay = (acc_y/16384.0) * 9.80665
+    Az = (acc_z/16384.0) * 9.80665
+
+
+    accel = math.sqrt(Ax**2 + Ay**2 + Az**2)
+
+    formatted_accel = "{:.2f}".format(accel)
+
+    accelerometerlabel.config(text=f"Acceleration: {formatted_accel} m/s²")
+    app.after(1000, read_accel)
+
+
+
 def update_batt(event=None):
     global speed2
     if speed2 <100:
@@ -99,6 +185,7 @@ def update_batt(event=None):
         label3.place(relx=0.751, rely=0.65)  
     else:
         label3.place(relx=0.79, rely=0.65) 
+
 def lower_batt(event=None):
     global speed2
     if speed2 > 0:
@@ -223,11 +310,7 @@ def warning_function(event=None):
     else:
         canvas5.itemconfig(warning1, fill='#FDDA0D')
     warning_filled = not warning_filled
-def update_speedometer():
-    angle = math.radians(135 + (speed / max_speed) * 360)
-    x = center_x + radius * math.cos(angle)
-    y = center_y + radius * math.sin(angle)
-    speedometer.coords(speed_indicator, center_x, center_y, x, y)
+
 
 
 max_speed = 200     
@@ -346,6 +429,9 @@ label5.place(relx= 0.47, rely=0.86)
 label6 = tk.Label(app, text="°C", bg = 'white',font=custom_font2)
 label6.place(relx= 0.495, rely=0.875)
 
+accelerometerlabel = tk.Label(app, text="0", bg = 'white',font=custom_font2)
+accelerometerlabel.place(relx= 0.43, rely=0.93)
+
 
 labelP = tk.Label(app, text="P", bg = 'white',fg= 'grey',font=custom_font2)
 labelR= tk.Label(app, text="R", bg = 'white',fg= 'grey',font=custom_font2)
@@ -364,8 +450,6 @@ ReadyLabel.place(relx= 0.463, rely=0.73)
 
 
 
-app.bind('<KeyPress-2>', update_speed)
-app.bind('<KeyPress-3>', lower_speed)
 app.bind('<KeyPress-4>', update_batt)
 app.bind('<KeyPress-5>', lower_batt)
 app.bind('<KeyPress-Left>', left_lane)
@@ -378,10 +462,17 @@ app.bind('<KeyPress-7>', D_function)
 app.bind('<KeyPress-Up>', light_function)
 app.bind('<KeyPress-Down>', speaker_function)
 app.bind('<KeyPress-6>', warning_function)
+
+
 Degree_functionchange()
 app.focus_set()
 
-
-update_sensor_data()
+update_speed()
+update_temperature()
 update_label()
+
+#MPU6050
+MPU_Init()
+read_accel()
+
 app.mainloop()
