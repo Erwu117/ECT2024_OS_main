@@ -41,6 +41,7 @@ temperature_celsius = 0
 bus = smbus2.SMBus(1)  # Use the appropriate bus number
 address = 0x76  # BME280 default address
 calibration_params = bme280.load_calibration_params(bus, address)
+bme_device = bme280.sample(bus, address, calibration_params)
 
 
 # Initialize MPU6050
@@ -95,6 +96,14 @@ def update_humidity():
         app.after(1000, update_humidity)
     except Exception as e:
         print('Sensor read failed:', e)
+
+def update_pressure():
+    try:
+        global pressure
+        pressure = bme_device.pressure
+        app.after(1000, update_pressure)
+    except Exception as e:
+        print('Sensor read failed:', e) 
 
 def update_speed(event=None): #In Progress
     global speed
@@ -161,14 +170,18 @@ def read_accel(): # MPU6050
     Ax = (acc_x/16384.0) * 9.80665
     Ay = (acc_y/16384.0) * 9.80665
     Az = (acc_z/16384.0) * 9.80665
-
-
     
-    # accel = math.sqrt(Ax**2 + Ay**2 + Az**2)
+    #accel = math.sqrt(Ax**2 + Ay**2 + Az**2)
 
-    formatted_accel = "{:.2f}".format(accel)
+    #formatted_accel = "{:.2f}".format(accel)
+    formatted_Ax = "{:.2f}".format(Ax)
+    formatted_Ay = "{:.2f}".format(Ay)
+    formatted_Az = "{:.2f}".format(Az)
 
-    accelerometerlabel.config(text=f"Acceleration: {formatted_accel} m/s²")
+    #accelerometerlabel.config(text=f"Acceleration: {formatted_accel} m/s²")
+    Axlabel.config(text=f"{formatted_Ax} m/s²")
+    Aylabel.config(text=f"{formatted_Ay} m/s²")
+    Azlabel.config(text=f"{formatted_Az} m/s²")
     app.after(1000, read_accel)
 
 
@@ -380,8 +393,8 @@ glow_after_id2 = None
 
 custom_font= ("Montserrat", 40,)
 custom_font2= ("Montserrat", 13, "bold")
-custom_font3= ("Montserrat", 18, "bold")
-
+custom_font3= ("Montserrat", 12, "bold")
+custom_font4= ("Montserrat", 8, "bold")
 
 speedometer.create_oval(15, 5, 235, 235,  outline="black", width=3)
 speedometer.create_oval(25, 10, 225, 225,  outline="black", width=3)
@@ -431,6 +444,13 @@ label6.place(relx= 0.495, rely=0.875)
 
 accelerometerlabel = tk.Label(app, text="0", bg = 'white',font=custom_font2)
 accelerometerlabel.place(relx= 0.43, rely=0.93)
+Axlabel = tk.Label(app, text="0", bg = 'white',font=custom_font4)
+Axlabel.place(relx= 0.44, rely=0.93)
+Aylabel = tk.Label(app, text="0", bg = 'white',font=custom_font4)
+Aylabel.place(relx= 0.51, rely=0.93)
+Azlabel = tk.Label(app, text="0", bg = 'white',font=custom_font4)
+Azlabel.place(relx= 0.37, rely=0.93)
+
 
 
 labelP = tk.Label(app, text="P", bg = 'white',fg= 'grey',font=custom_font2)
