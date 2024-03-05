@@ -65,17 +65,15 @@ GYRO_ZOUT_H = 0x47
 # Initialize DHT11
 dht_device = adafruit_dht.DHT11(board.D4)
 
-def celsius_to_fahrenheit(celsius):
-    return round((celsius * 9/5) + 32, 2)
 
 def Degree_functionchange():
     global temperature_celsius  # Assuming you have a mechanism to update this variable periodically
-    temperature = celsius_to_fahrenheit(temperature_celsius)
-    label5.config(text=str(temperature))
+    
+    label5.config(text=str(temperature_celsius))
     # Adjust label position based on temperature length
-    if len(str(temperature)) == 2:
+    if len(str(temperature_celsius)) == 2:
         label5.place(relx=0.45, rely=0.87)
-    elif len(str(temperature)) > 2:  
+    elif len(str(temperature_celsius)) > 2:  
         label5.place(relx=0.43, rely=0.87)  
     else:
         label5.place(relx=0.47, rely=0.87)
