@@ -1,4 +1,4 @@
-#Imports for GUI
+##Imports for GUI
 import tkinter as tk
 import math
 import tkintermapview
@@ -441,7 +441,8 @@ label5.place(relx= 0.47, rely=0.86)
 label6 = tk.Label(app, text="°C", bg = 'white',font=custom_font2)
 label6.place(relx= 0.495, rely=0.875)
 
-
+accelerometerlabel = tk.Label(app, text="0", bg = 'white',font=custom_font2)
+accelerometerlabel.place(relx= 0.43, rely=0.93)
 Axlabel = tk.Label(app, text="0", bg = 'white',font=custom_font4)
 Axlabel.place(relx= 0.35, rely=0.93)
 Aylabel = tk.Label(app, text="0", bg = 'white',font=custom_font4)
