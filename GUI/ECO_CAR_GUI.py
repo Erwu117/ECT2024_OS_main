@@ -65,26 +65,23 @@ GYRO_ZOUT_H = 0x47
 # Initialize DHT11
 dht_device = adafruit_dht.DHT11(board.D4)
 
-def celsius_to_fahrenheit(celsius):
-    return round((celsius * 9/5) + 32, 2)
 
-def Degree_functionchange():
-    global temperature_celsius  # Assuming you have a mechanism to update this variable periodically
-    temperature = celsius_to_fahrenheit(temperature_celsius)
-    label5.config(text=str(temperature))
-    # Adjust label position based on temperature length
-    if len(str(temperature)) == 2:
-        label5.place(relx=0.45, rely=0.87)
-    elif len(str(temperature)) > 2:  
-        label5.place(relx=0.43, rely=0.87)  
-    else:
-        label5.place(relx=0.47, rely=0.87)
+
+
 
 def update_temperature():
     try:
         global temperature_celsius
         temperature_celsius = dht_device.temperature
-        Degree_functionchange()
+        temperature = temperature_celsius
+        label5.config(text=str(temperature))
+    # Adjust label position based on temperature length
+        if len(str(temperature)) == 2:
+            label5.place(relx=0.45, rely=0.87)
+        elif len(str(temperature)) > 2:  
+            label5.place(relx=0.43, rely=0.87)  
+        else:
+            label5.place(relx=0.47, rely=0.87)
         app.after(1000, update_temperature)
     except Exception as e:
         print('Sensor read failed:', e)
@@ -92,7 +89,8 @@ def update_temperature():
 def update_humidity():
     try:
         global humidity
-        humidity = dht_device.humidity
+        humidity = dht_device.humidity # Convert humidity to an integer
+        humiditylabel.config(text=str(humidity))
         app.after(1000, update_humidity)
     except Exception as e:
         print('Sensor read failed:', e)
@@ -100,7 +98,8 @@ def update_humidity():
 def update_pressure():
     try:
         global pressure
-        pressure = bme_device.pressure
+        pressure = int(bme_device.pressure)
+        pressurelabel.config(text=str(pressure))
         app.after(1000, update_pressure)
     except Exception as e:
         print('Sensor read failed:', e) 
@@ -174,14 +173,14 @@ def read_accel(): # MPU6050
     #accel = math.sqrt(Ax**2 + Ay**2 + Az**2)
 
     #formatted_accel = "{:.2f}".format(accel)
-    formatted_Ax = "{:.2f}".format(Ax)
-    formatted_Ay = "{:.2f}".format(Ay)
-    formatted_Az = "{:.2f}".format(Az)
+    formatted_Ax = "{:.1f}".format(Ax)
+    formatted_Ay = "{:.1f}".format(Ay)
+    formatted_Az = "{:.1f}".format(Az)
 
     #accelerometerlabel.config(text=f"Acceleration: {formatted_accel} m/s²")
-    Axlabel.config(text=f"{formatted_Ax} m/s²")
-    Aylabel.config(text=f"{formatted_Ay} m/s²")
-    Azlabel.config(text=f"{formatted_Az} m/s²")
+    Axlabel.config(text=f"{formatted_Ax}m/s²")
+    Aylabel.config(text=f"{formatted_Ay}m/s²")
+    Azlabel.config(text=f"{formatted_Az}m/s²")
     app.after(1000, read_accel)
 
 
@@ -442,14 +441,18 @@ label5.place(relx= 0.47, rely=0.86)
 label6 = tk.Label(app, text="°C", bg = 'white',font=custom_font2)
 label6.place(relx= 0.495, rely=0.875)
 
-accelerometerlabel = tk.Label(app, text="0", bg = 'white',font=custom_font2)
-accelerometerlabel.place(relx= 0.43, rely=0.93)
+
 Axlabel = tk.Label(app, text="0", bg = 'white',font=custom_font4)
-Axlabel.place(relx= 0.44, rely=0.93)
+Axlabel.place(relx= 0.35, rely=0.93)
 Aylabel = tk.Label(app, text="0", bg = 'white',font=custom_font4)
-Aylabel.place(relx= 0.51, rely=0.93)
+Aylabel.place(relx= 0.45, rely=0.93)
 Azlabel = tk.Label(app, text="0", bg = 'white',font=custom_font4)
-Azlabel.place(relx= 0.37, rely=0.93)
+Azlabel.place(relx= 0.55, rely=0.93)
+
+humiditylabel=tk.Label(app, text="0", bg = 'white',font=custom_font3)
+humiditylabel.place(relx= 0.55, rely=0.87)
+pressurelabel=tk.Label(app, text="0", bg = 'white',font=custom_font4)
+pressurelabel.place(relx= 0.8, rely=0.95)
 
 
 
@@ -484,13 +487,14 @@ app.bind('<KeyPress-Down>', speaker_function)
 app.bind('<KeyPress-6>', warning_function)
 
 
-Degree_functionchange()
+
 app.focus_set()
 
 update_speed()
 update_temperature()
 update_label()
-
+update_humidity()
+update_pressure()
 #MPU6050
 MPU_Init()
 read_accel()
