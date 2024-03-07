@@ -1,4 +1,4 @@
-#Imports for GUI
+##Imports for GUI
 import tkinter as tk
 import math
 import tkintermapview
@@ -14,7 +14,9 @@ import smbus
 
 #Import for DHT11
 import adafruit_dht
-
+from time import sleep
+DHT_PIN = board.D4
+dht_device = adafruit_dht.DHT11(board.D4)
 
 app = tk.Tk()
 app.title("CAR GUI")
@@ -41,7 +43,7 @@ temperature_celsius = 0
 bus = smbus2.SMBus(1)  # Use the appropriate bus number
 address = 0x76  # BME280 default address
 calibration_params = bme280.load_calibration_params(bus, address)
-bme_device = bme280.sample(bus, address, calibration_params)
+
 
 
 # Initialize MPU6050
@@ -62,46 +64,41 @@ GYRO_YOUT_H = 0x45
 GYRO_ZOUT_H = 0x47
 
 
-# Initialize DHT11
-dht_device = adafruit_dht.DHT11(board.D4)
+def read_dht11():
+    max_attempts = 5
+    for attempt in range(max_attempts):
+        try:
+            temperature_c = dht_device.temperature
+            humidity = dht_device.humidity
+            if temperature_c is not None and humidity is not None:
+                return temperature_c, humidity
+        except Exception as e:
+            print('Sensor read failed:', str(e))
+            sleep(2)
+    return None, None
 
-
-def Degree_functionchange():
-    global temperature_celsius  # Assuming you have a mechanism to update this variable periodically
-    
-    label5.config(text=str(temperature_celsius))
-    # Adjust label position based on temperature length
-    if len(str(temperature_celsius)) == 2:
-        label5.place(relx=0.45, rely=0.87)
-    elif len(str(temperature_celsius)) > 2:  
-        label5.place(relx=0.43, rely=0.87)  
+def update_temperature_and_humidity():
+    """
+    Updates the GUI labels for temperature and humidity using readings from the DHT11 sensor.
+    """
+    temperature, humidity = read_dht11()
+    if temperature is not None and humidity is not None:
+        label5.config(text=f"{temperature}°C")
+        humiditylabel.config(text=f"{humidity}%")
     else:
-        label5.place(relx=0.47, rely=0.87)
-
-def update_temperature():
-    try:
-        global temperature_celsius
-        temperature_celsius = dht_device.temperature
-        Degree_functionchange()
-        app.after(1000, update_temperature)
-    except Exception as e:
-        print('Sensor read failed:', e)
-
-def update_humidity():
-    try:
-        global humidity
-        humidity = dht_device.humidity
-        app.after(1000, update_humidity)
-    except Exception as e:
-        print('Sensor read failed:', e)
+        print("Failed to read from DHT11 sensor after multiple attempts.")
+    app.after(3000, update_temperature_and_humidity)
 
 def update_pressure():
-    try:
+    try: 
+        bme_device = bme280.sample(bus, address, calibration_params)
         global pressure
         pressure = bme_device.pressure
+        format_pressure = "{:.2f}".format(pressure)
+        pressurelabel.config(text=str(format_pressure))
         app.after(1000, update_pressure)
     except Exception as e:
-        print('Sensor read failed:', e) 
+        print('Sensor read failed:', str(e)) 
 
 def update_speed(event=None): #In Progress
     global speed
@@ -110,7 +107,7 @@ def update_speed(event=None): #In Progress
 
     # speed = magnitude
 
-    speed_str = "{:.2f}".format(speed)
+    speed_str = speed
     if speed < 160:
         speedometer.itemconfigure(label, text=str(speed_str))
 
@@ -165,21 +162,21 @@ def read_accel(): # MPU6050
     acc_y = read_raw_data(ACCEL_YOUT_H)
     acc_z = read_raw_data(ACCEL_ZOUT_H)
 
-    Ax = (acc_x/16384.0) * 9.80665
-    Ay = (acc_y/16384.0) * 9.80665
-    Az = (acc_z/16384.0) * 9.80665
+    Ax = (acc_x/16384.0) 
+    Ay = (acc_y/16384.0) 
+    Az = (acc_z/16384.0) 
     
     #accel = math.sqrt(Ax**2 + Ay**2 + Az**2)
 
     #formatted_accel = "{:.2f}".format(accel)
-    formatted_Ax = "{:.2f}".format(Ax)
-    formatted_Ay = "{:.2f}".format(Ay)
-    formatted_Az = "{:.2f}".format(Az)
+    formatted_Ax = "{:.1f}".format(Ax)
+    formatted_Ay = "{:.1f}".format(Ay)
+    formatted_Az = "{:.1f}".format(Az)
 
     #accelerometerlabel.config(text=f"Acceleration: {formatted_accel} m/s²")
-    Axlabel.config(text=f"{formatted_Ax} m/s²")
-    Aylabel.config(text=f"{formatted_Ay} m/s²")
-    Azlabel.config(text=f"{formatted_Az} m/s²")
+    Axlabel.config(text=f"{formatted_Ax}m/s²")
+    Aylabel.config(text=f"{formatted_Ay}m/s²")
+    Azlabel.config(text=f"{formatted_Az}m/s²")
     app.after(1000, read_accel)
 
 
@@ -437,17 +434,20 @@ label4.place(relx= 0.79, rely=0.78)
 
 label5 = tk.Label(app, text="0", bg = 'white',font=custom_font3)
 label5.place(relx= 0.47, rely=0.86)
-label6 = tk.Label(app, text="°C", bg = 'white',font=custom_font2)
-label6.place(relx= 0.495, rely=0.875)
 
-accelerometerlabel = tk.Label(app, text="0", bg = 'white',font=custom_font2)
-accelerometerlabel.place(relx= 0.43, rely=0.93)
+
+
 Axlabel = tk.Label(app, text="0", bg = 'white',font=custom_font4)
-Axlabel.place(relx= 0.44, rely=0.93)
+Axlabel.place(relx= 0.37, rely=0.93)
 Aylabel = tk.Label(app, text="0", bg = 'white',font=custom_font4)
-Aylabel.place(relx= 0.51, rely=0.93)
+Aylabel.place(relx= 0.47, rely=0.93)
 Azlabel = tk.Label(app, text="0", bg = 'white',font=custom_font4)
-Azlabel.place(relx= 0.37, rely=0.93)
+Azlabel.place(relx= 0.57, rely=0.93)
+
+humiditylabel=tk.Label(app, text="0", bg = 'white',font=custom_font3)
+humiditylabel.place(relx= 0.55, rely=0.87)
+pressurelabel=tk.Label(app, text="0", bg = 'white',font=custom_font4)
+pressurelabel.place(relx= 0.8, rely=0.95)
 
 
 
@@ -482,13 +482,14 @@ app.bind('<KeyPress-Down>', speaker_function)
 app.bind('<KeyPress-6>', warning_function)
 
 
-Degree_functionchange()
-app.focus_set()
 
+app.focus_set()
 update_speed()
-update_temperature()
 update_label()
 
+update_temperature_and_humidity()
+
+update_pressure()
 #MPU6050
 MPU_Init()
 read_accel()
