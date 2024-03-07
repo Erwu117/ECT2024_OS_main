@@ -77,6 +77,7 @@ def read_dht11():
             sleep(2)
     return None, None
 
+<<<<<<< HEAD
 def update_temperature_and_humidity():
     """
     Updates the GUI labels for temperature and humidity using readings from the DHT11 sensor.
@@ -88,14 +89,50 @@ def update_temperature_and_humidity():
     else:
         print("Failed to read from DHT11 sensor after multiple attempts.")
     app.after(3000, update_temperature_and_humidity)
+=======
+
+
+
+
+def update_temperature():
+    try:
+        global temperature_celsius
+        temperature_celsius = dht_device.temperature
+        temperature = temperature_celsius
+        label5.config(text=str(temperature))
+    # Adjust label position based on temperature length
+        if len(str(temperature)) == 2:
+            label5.place(relx=0.45, rely=0.87)
+        elif len(str(temperature)) > 2:  
+            label5.place(relx=0.43, rely=0.87)  
+        else:
+            label5.place(relx=0.47, rely=0.87)
+        app.after(1000, update_temperature)
+    except Exception as e:
+        print('Sensor read failed:', e)
+
+def update_humidity():
+    try:
+        global humidity
+        humidity = dht_device.humidity # Convert humidity to an integer
+        humiditylabel.config(text=str(humidity))
+        app.after(1000, update_humidity)
+    except Exception as e:
+        print('Sensor read failed:', e)
+>>>>>>> dbedd44204edbf39e23c36f9d8c97e035fda551c
 
 def update_pressure():
     try: 
         bme_device = bme280.sample(bus, address, calibration_params)
         global pressure
+<<<<<<< HEAD
         pressure = bme_device.pressure
         format_pressure = "{:.2f}".format(pressure)
         pressurelabel.config(text=str(format_pressure))
+=======
+        pressure = int(bme_device.pressure)
+        pressurelabel.config(text=str(pressure))
+>>>>>>> dbedd44204edbf39e23c36f9d8c97e035fda551c
         app.after(1000, update_pressure)
     except Exception as e:
         print('Sensor read failed:', str(e)) 
@@ -438,11 +475,19 @@ label5.place(relx= 0.47, rely=0.86)
 
 
 Axlabel = tk.Label(app, text="0", bg = 'white',font=custom_font4)
+<<<<<<< HEAD
 Axlabel.place(relx= 0.37, rely=0.93)
 Aylabel = tk.Label(app, text="0", bg = 'white',font=custom_font4)
 Aylabel.place(relx= 0.47, rely=0.93)
 Azlabel = tk.Label(app, text="0", bg = 'white',font=custom_font4)
 Azlabel.place(relx= 0.57, rely=0.93)
+=======
+Axlabel.place(relx= 0.35, rely=0.93)
+Aylabel = tk.Label(app, text="0", bg = 'white',font=custom_font4)
+Aylabel.place(relx= 0.45, rely=0.93)
+Azlabel = tk.Label(app, text="0", bg = 'white',font=custom_font4)
+Azlabel.place(relx= 0.55, rely=0.93)
+>>>>>>> dbedd44204edbf39e23c36f9d8c97e035fda551c
 
 humiditylabel=tk.Label(app, text="0", bg = 'white',font=custom_font3)
 humiditylabel.place(relx= 0.55, rely=0.87)
@@ -482,13 +527,22 @@ app.bind('<KeyPress-Down>', speaker_function)
 app.bind('<KeyPress-6>', warning_function)
 
 
+<<<<<<< HEAD
+=======
+
+app.focus_set()
+>>>>>>> dbedd44204edbf39e23c36f9d8c97e035fda551c
 
 app.focus_set()
 update_speed()
 update_label()
+<<<<<<< HEAD
 
 update_temperature_and_humidity()
 
+=======
+update_humidity()
+>>>>>>> dbedd44204edbf39e23c36f9d8c97e035fda551c
 update_pressure()
 #MPU6050
 MPU_Init()
