@@ -94,8 +94,9 @@ def update_pressure():
     try: 
         bme_device = bme280.sample(bus, address, calibration_params)
         global pressure
-        pressure = int(bme_device.pressure)
-        pressurelabel.config(text=str(pressure))
+        pressure = bme_device.pressure
+        format_pressure = "{:.3f}".format(pressure)
+        pressurelabel.config(text=str(format_pressure))
         app.after(1000, update_pressure)
     except Exception as e:
         print('Sensor read failed:', str(e)) 
