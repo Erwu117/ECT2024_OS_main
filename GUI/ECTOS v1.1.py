@@ -129,8 +129,6 @@ if __name__ == "__main__":
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
-    update_speed()
-    update_label()
 
     update_temperature_and_humidity()
 
