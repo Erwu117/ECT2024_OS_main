@@ -86,8 +86,10 @@ def update_temperature_and_humidity():
         label5.config(text=f"{temperature}°C")
         humiditylabel.config(text=f"{humidity}%")
     else:
+        label5.config(text="N/A")
+        humiditylabel.config(text="N/A")
         print("Failed to read from DHT11 sensor after multiple attempts.")
-    app.after(3000, update_temperature_and_humidity)
+    app.after(1000, update_temperature_and_humidity)
 
 
 def update_pressure():
