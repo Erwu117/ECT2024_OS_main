@@ -13,102 +13,521 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="animated">
+   <bool>true</bool>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(255, 255, 255);
-border:none;</string>
+    <string notr="true"/>
    </property>
-   <widget class="QLabel" name="accel">
+   <widget class="QLabel" name="LOGO">
     <property name="geometry">
      <rect>
       <x>120</x>
       <y>330</y>
-      <width>49</width>
-      <height>16</height>
+      <width>291</width>
+      <height>171</height>
      </rect>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>../../../Downloads/Splash_Screen-removebg-preview.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="temp">
+   <widget class="QLabel" name="Background">
     <property name="geometry">
      <rect>
-      <x>620</x>
-      <y>320</y>
-      <width>49</width>
-      <height>16</height>
+      <x>-10</x>
+      <y>-10</y>
+      <width>831</width>
+      <height>491</height>
      </rect>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>../../../Downloads/Splash Screen (1).png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="xcord">
+   <widget class="QLineEdit" name="TimeBox">
     <property name="geometry">
      <rect>
-      <x>310</x>
-      <y>410</y>
-      <width>49</width>
-      <height>16</height>
+      <x>16</x>
+      <y>20</y>
+      <width>201</width>
+      <height>71</height>
      </rect>
     </property>
-    <property name="text">
-     <string>TextLabel</string>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+    background-color: transparent; /* Make the background transparent */
+    border: 2px solid #b4ffc1; /* Set the border thickness and color */
+	border-radius: 10px; /* Set the border radius to make rounded edges */
+    padding: 5px;
+}
+
+</string>
+    </property>
+    <property name="placeholderText">
+     <string>Hello</string>
     </property>
    </widget>
-   <widget class="QLabel" name="ycord">
+   <widget class="QLineEdit" name="SpeedBox">
     <property name="geometry">
      <rect>
-      <x>380</x>
-      <y>410</y>
-      <width>49</width>
-      <height>16</height>
+      <x>16</x>
+      <y>100</y>
+      <width>201</width>
+      <height>201</height>
      </rect>
     </property>
-    <property name="text">
-     <string>TextLabel</string>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+    background-color: transparent; /* Make the background transparent */
+    border: 2px solid #b4ffc1; /* Set the border thickness and color */
+	border-radius: 10px; /* Set the border radius to make rounded edges */
+    padding: 5px;
+}</string>
     </property>
    </widget>
-   <widget class="QLabel" name="zcord">
+   <widget class="QLineEdit" name="AccelCoords">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>410</y>
-      <width>49</width>
-      <height>16</height>
+      <x>16</x>
+      <y>313</y>
+      <width>201</width>
+      <height>150</height>
      </rect>
     </property>
-    <property name="text">
-     <string>TextLabel</string>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+    background-color: transparent; /* Make the background transparent */
+    border: 2px solid #b4ffc1; /* Set the border thickness and color */
+	border-radius: 10px; /* Set the border radius to make rounded edges */
+    padding: 5px;
+}</string>
     </property>
    </widget>
-   <widget class="QLabel" name="humidity">
+   <widget class="QLineEdit" name="MapBox">
     <property name="geometry">
      <rect>
-      <x>380</x>
-      <y>290</y>
-      <width>49</width>
-      <height>16</height>
+      <x>228</x>
+      <y>20</y>
+      <width>346</width>
+      <height>341</height>
      </rect>
     </property>
-    <property name="text">
-     <string>TextLabel</string>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+    background-color: transparent; /* Make the background transparent */
+    border: 2px solid #b4ffc1; /* Set the border thickness and color */
+	border-radius: 10px; /* Set the border radius to make rounded edges */
+    padding: 5px;
+}</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_7">
+   <widget class="QLineEdit" name="TempBox">
     <property name="geometry">
      <rect>
-      <x>390</x>
-      <y>350</y>
-      <width>49</width>
-      <height>16</height>
+      <x>585</x>
+      <y>20</y>
+      <width>201</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+    background-color: transparent; /* Make the background transparent */
+    border: 2px solid #b4ffc1; /* Set the border thickness and color */
+	border-radius: 10px; /* Set the border radius to make rounded edges */
+    padding: 5px;
+}</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="BatteryBox">
+    <property name="geometry">
+     <rect>
+      <x>585</x>
+      <y>100</y>
+      <width>201</width>
+      <height>201</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+    background-color: transparent; /* Make the background transparent */
+    border: 2px solid #b4ffc1; /* Set the border thickness and color */
+	border-radius: 10px; /* Set the border radius to make rounded edges */
+    padding: 5px;
+}</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="HumidityBox">
+    <property name="geometry">
+     <rect>
+      <x>585</x>
+      <y>313</y>
+      <width>201</width>
+      <height>70</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+    background-color: transparent; /* Make the background transparent */
+    border: 2px solid #b4ffc1; /* Set the border thickness and color */
+	border-radius: 10px; /* Set the border radius to make rounded edges */
+    padding: 5px;
+}</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="PressureBox">
+    <property name="geometry">
+     <rect>
+      <x>585</x>
+      <y>390</y>
+      <width>201</width>
+      <height>70</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Nirmala UI Semilight</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+    background-color: transparent; /* Make the background transparent */
+    border: 2px solid #b4ffc1; /* Set the border thickness and color */
+	border-radius: 10px; /* Set the border radius to make rounded edges */
+    padding: 5px;
+}</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="AuxiliaryBox">
+    <property name="geometry">
+     <rect>
+      <x>316</x>
+      <y>380</y>
+      <width>170</width>
+      <height>70</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit {
+    background-color: transparent; /* Make the background transparent */
+    border: 2px solid #b4ffc1; /* Set the border thickness and color */
+	border-radius: 10px; /* Set the border radius to make rounded edges */
+    padding: 5px;
+}</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="Shell_Logo">
+    <property name="geometry">
+     <rect>
+      <x>474</x>
+      <y>380</y>
+      <width>121</width>
+      <height>71</height>
      </rect>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
+    </property>
+    <property name="textFormat">
+     <enum>Qt::AutoText</enum>
+    </property>
+    <property name="pixmap">
+     <pixmap>../../../Downloads/Shell-Logo.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
     </property>
    </widget>
+   <widget class="QLabel" name="Time">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>50</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei UI</family>
+      <pointsize>25</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+    color: #b4ffc1; /* Set the color of the QLabel text */
+}</string>
+    </property>
+    <property name="text">
+     <string>9:30 AM</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="TimeLabel">
+    <property name="geometry">
+     <rect>
+      <x>41</x>
+      <y>22</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei UI</family>
+      <pointsize>14</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+    color: #b4ffc1; /* Set the color of the QLabel text */
+}</string>
+    </property>
+    <property name="text">
+     <string>Time</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="SpeedLabel">
+    <property name="geometry">
+     <rect>
+      <x>42</x>
+      <y>100</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei UI</family>
+      <pointsize>14</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+    color: #b4ffc1; /* Set the color of the QLabel text */
+}</string>
+    </property>
+    <property name="text">
+     <string>Speed</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="BatteryLabel">
+    <property name="geometry">
+     <rect>
+      <x>612</x>
+      <y>100</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei UI</family>
+      <pointsize>14</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+    color: #b4ffc1; /* Set the color of the QLabel text */
+}</string>
+    </property>
+    <property name="text">
+     <string>Battery</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="TempLabel">
+    <property name="geometry">
+     <rect>
+      <x>612</x>
+      <y>20</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei UI</family>
+      <pointsize>14</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+    color: #b4ffc1; /* Set the color of the QLabel text */
+}</string>
+    </property>
+    <property name="text">
+     <string>Temp</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="HumidityLabel">
+    <property name="geometry">
+     <rect>
+      <x>614</x>
+      <y>314</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei UI</family>
+      <pointsize>14</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+    color: #b4ffc1; /* Set the color of the QLabel text */
+}</string>
+    </property>
+    <property name="text">
+     <string>Humidity</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="CoordinatesLabel">
+    <property name="geometry">
+     <rect>
+      <x>44</x>
+      <y>315</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei UI</family>
+      <pointsize>14</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+    color: #b4ffc1; /* Set the color of the QLabel text */
+}</string>
+    </property>
+    <property name="text">
+     <string>Coordinates</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="PressureLabel">
+    <property name="geometry">
+     <rect>
+      <x>613</x>
+      <y>392</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei UI</family>
+      <pointsize>14</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+    color: #b4ffc1; /* Set the color of the QLabel text */
+}</string>
+    </property>
+    <property name="text">
+     <string>Pressure</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="Map">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>20</y>
+      <width>341</width>
+      <height>341</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel{
+	border-radius: 10px; /* Set the border radius to make rounded edges */
+    padding: 5px;
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>../../../Downloads/ECTOS Design Concepts (2).png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <zorder>Background</zorder>
+   <zorder>LOGO</zorder>
+   <zorder>TimeBox</zorder>
+   <zorder>SpeedBox</zorder>
+   <zorder>AccelCoords</zorder>
+   <zorder>MapBox</zorder>
+   <zorder>TempBox</zorder>
+   <zorder>BatteryBox</zorder>
+   <zorder>HumidityBox</zorder>
+   <zorder>PressureBox</zorder>
+   <zorder>AuxiliaryBox</zorder>
+   <zorder>Shell_Logo</zorder>
+   <zorder>Time</zorder>
+   <zorder>TimeLabel</zorder>
+   <zorder>SpeedLabel</zorder>
+   <zorder>BatteryLabel</zorder>
+   <zorder>TempLabel</zorder>
+   <zorder>HumidityLabel</zorder>
+   <zorder>CoordinatesLabel</zorder>
+   <zorder>PressureLabel</zorder>
+   <zorder>Map</zorder>
   </widget>
  </widget>
  <resources/>
