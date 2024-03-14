@@ -33,7 +33,7 @@
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>../../../Downloads/Splash_Screen-removebg-preview.png</pixmap>
+     <pixmap>EcoCar-Logo.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -52,7 +52,7 @@
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>../../../Downloads/Splash Screen (1).png</pixmap>
+     <pixmap>MainBg.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -78,7 +78,7 @@
 </string>
     </property>
     <property name="placeholderText">
-     <string>Hello</string>
+     <string/>
     </property>
    </widget>
    <widget class="QLineEdit" name="SpeedBox">
@@ -247,7 +247,7 @@
      <enum>Qt::AutoText</enum>
     </property>
     <property name="pixmap">
-     <pixmap>../../../Downloads/Shell-Logo.png</pixmap>
+     <pixmap>Shell-Logo.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -501,7 +501,7 @@
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>../../../Downloads/ECTOS Design Concepts (2).png</pixmap>
+     <pixmap>ECTOS Background.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
