@@ -1,5 +1,10 @@
+#Data value displays are in retranslateUi() under "#Label Values" comment.
+
+#Imports for GUI
 from PyQt5 import QtCore, QtGui, QtWidgets
 import os
+
+#Main Window
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -9,6 +14,9 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setStyleSheet("")
         self.centralwidget.setObjectName("centralwidget")
+
+#Map Box
+
         self.MapBox = QtWidgets.QFrame(self.centralwidget)
         self.MapBox.setGeometry(QtCore.QRect(225, 20, 350, 350))
         self.MapBox.setStyleSheet(".QFrame {\n"
@@ -20,6 +28,9 @@ class Ui_MainWindow(object):
         self.MapBox.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.MapBox.setFrameShadow(QtWidgets.QFrame.Raised)
         self.MapBox.setObjectName("MapBox")
+
+#Time Box
+
         self.TimeBox = QtWidgets.QFrame(self.centralwidget)
         self.TimeBox.setGeometry(QtCore.QRect(20, 20, 200, 75))
         self.TimeBox.setStyleSheet(".QFrame {\n"
@@ -31,6 +42,9 @@ class Ui_MainWindow(object):
         self.TimeBox.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.TimeBox.setFrameShadow(QtWidgets.QFrame.Raised)
         self.TimeBox.setObjectName("TimeBox")
+
+        #Time Label
+
         self.Time = QtWidgets.QLabel(self.TimeBox)
         self.Time.setGeometry(QtCore.QRect(0, 30, 200, 30))
         font = QtGui.QFont()
@@ -43,6 +57,8 @@ class Ui_MainWindow(object):
 "}")
         self.Time.setAlignment(QtCore.Qt.AlignCenter)
         self.Time.setObjectName("Time")
+
+
         self.TimeLabel = QtWidgets.QLabel(self.TimeBox)
         self.TimeLabel.setGeometry(QtCore.QRect(0, 0, 200, 30))
         font = QtGui.QFont()
@@ -55,6 +71,9 @@ class Ui_MainWindow(object):
 "}")
         self.TimeLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.TimeLabel.setObjectName("TimeLabel")
+
+#Temp Box
+
         self.TempBox = QtWidgets.QFrame(self.centralwidget)
         self.TempBox.setGeometry(QtCore.QRect(580, 20, 200, 75))
         self.TempBox.setStyleSheet(".QFrame {\n"
@@ -66,6 +85,9 @@ class Ui_MainWindow(object):
         self.TempBox.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.TempBox.setFrameShadow(QtWidgets.QFrame.Raised)
         self.TempBox.setObjectName("TempBox")
+
+        #Temp Label
+
         self.Temp = QtWidgets.QLabel(self.TempBox)
         self.Temp.setEnabled(True)
         self.Temp.setGeometry(QtCore.QRect(0, 30, 200, 30))
@@ -79,6 +101,8 @@ class Ui_MainWindow(object):
 "}")
         self.Temp.setAlignment(QtCore.Qt.AlignCenter)
         self.Temp.setObjectName("Temp")
+
+
         self.TempLabel = QtWidgets.QLabel(self.TempBox)
         self.TempLabel.setGeometry(QtCore.QRect(0, 0, 200, 30))
         font = QtGui.QFont()
@@ -91,6 +115,9 @@ class Ui_MainWindow(object):
 "}")
         self.TempLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.TempLabel.setObjectName("TempLabel")
+
+#Humidity Box
+
         self.HumidityBox = QtWidgets.QFrame(self.centralwidget)
         self.HumidityBox.setGeometry(QtCore.QRect(580, 305, 200, 75))
         self.HumidityBox.setStyleSheet(".QFrame {\n"
@@ -102,6 +129,9 @@ class Ui_MainWindow(object):
         self.HumidityBox.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.HumidityBox.setFrameShadow(QtWidgets.QFrame.Raised)
         self.HumidityBox.setObjectName("HumidityBox")
+        
+        #Humidity Label
+
         self.Humidity = QtWidgets.QLabel(self.HumidityBox)
         self.Humidity.setGeometry(QtCore.QRect(0, 30, 200, 30))
         font = QtGui.QFont()
@@ -114,6 +144,8 @@ class Ui_MainWindow(object):
 "}")
         self.Humidity.setAlignment(QtCore.Qt.AlignCenter)
         self.Humidity.setObjectName("Humidity")
+
+
         self.HumidityLabel = QtWidgets.QLabel(self.HumidityBox)
         self.HumidityLabel.setGeometry(QtCore.QRect(0, 0, 200, 30))
         font = QtGui.QFont()
@@ -126,6 +158,9 @@ class Ui_MainWindow(object):
 "}")
         self.HumidityLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.HumidityLabel.setObjectName("HumidityLabel")
+
+#Pressure Box
+
         self.PressureBox = QtWidgets.QFrame(self.centralwidget)
         self.PressureBox.setGeometry(QtCore.QRect(580, 385, 200, 75))
         self.PressureBox.setStyleSheet(".QFrame {\n"
@@ -137,6 +172,9 @@ class Ui_MainWindow(object):
         self.PressureBox.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.PressureBox.setFrameShadow(QtWidgets.QFrame.Raised)
         self.PressureBox.setObjectName("PressureBox")
+        
+        #Pressure Label
+
         self.Pressure = QtWidgets.QLabel(self.PressureBox)
         self.Pressure.setGeometry(QtCore.QRect(0, 30, 200, 30))
         font = QtGui.QFont()
@@ -149,6 +187,8 @@ class Ui_MainWindow(object):
 "}")
         self.Pressure.setAlignment(QtCore.Qt.AlignCenter)
         self.Pressure.setObjectName("Pressure")
+
+
         self.PressureLabel = QtWidgets.QLabel(self.PressureBox)
         self.PressureLabel.setGeometry(QtCore.QRect(0, 0, 200, 30))
         font = QtGui.QFont()
@@ -161,6 +201,9 @@ class Ui_MainWindow(object):
 "}")
         self.PressureLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.PressureLabel.setObjectName("PressureLabel")
+
+# Acceleration Box
+
         self.AccelerationBox = QtWidgets.QFrame(self.centralwidget)
         self.AccelerationBox.setGeometry(QtCore.QRect(20, 305, 200, 155))
         self.AccelerationBox.setStyleSheet(".QFrame {\n"
@@ -184,6 +227,9 @@ class Ui_MainWindow(object):
 "}")
         self.AccelerationLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.AccelerationLabel.setObjectName("AccelerationLabel")
+        
+        #X-Acceleration Label
+
         self.AccelerationX = QtWidgets.QLabel(self.AccelerationBox)
         self.AccelerationX.setGeometry(QtCore.QRect(10, 35, 180, 30))
         font = QtGui.QFont()
@@ -195,6 +241,9 @@ class Ui_MainWindow(object):
 "    color: #b4ffc1; /* Set the color of the QLabel text */\n"
 "}")
         self.AccelerationX.setObjectName("AccelerationX")
+
+        #Y-Acceleration Label
+
         self.AccelerationY = QtWidgets.QLabel(self.AccelerationBox)
         self.AccelerationY.setGeometry(QtCore.QRect(10, 70, 180, 30))
         font = QtGui.QFont()
@@ -206,6 +255,9 @@ class Ui_MainWindow(object):
 "    color: #b4ffc1; /* Set the color of the QLabel text */\n"
 "}")
         self.AccelerationY.setObjectName("AccelerationY")
+        
+        #Z-Acceleration Label
+
         self.AccelerationZ = QtWidgets.QLabel(self.AccelerationBox)
         self.AccelerationZ.setGeometry(QtCore.QRect(10, 105, 180, 30))
         font = QtGui.QFont()
@@ -217,6 +269,9 @@ class Ui_MainWindow(object):
 "    color: #b4ffc1; /* Set the color of the QLabel text */\n"
 "}")
         self.AccelerationZ.setObjectName("AccelerationZ")
+
+#Speed Box
+
         self.SpeedBox = QtWidgets.QFrame(self.centralwidget)
         self.SpeedBox.setGeometry(QtCore.QRect(20, 100, 200, 200))
         self.SpeedBox.setStyleSheet(".QFrame {\n"
@@ -252,6 +307,9 @@ class Ui_MainWindow(object):
 "}")
         self.SpeedUnit.setAlignment(QtCore.Qt.AlignCenter)
         self.SpeedUnit.setObjectName("SpeedUnit")
+
+        #Speed Label
+
         self.Speed = QtWidgets.QLabel(self.SpeedBox)
         self.Speed.setGeometry(QtCore.QRect(0, 40, 200, 100))
         font = QtGui.QFont()
@@ -264,6 +322,9 @@ class Ui_MainWindow(object):
 "}")
         self.Speed.setAlignment(QtCore.Qt.AlignCenter)
         self.Speed.setObjectName("Speed")
+
+#Battery Box
+
         self.BatteryBox = QtWidgets.QFrame(self.centralwidget)
         self.BatteryBox.setGeometry(QtCore.QRect(580, 100, 200, 200))
         self.BatteryBox.setStyleSheet(".QFrame {\n"
@@ -275,6 +336,9 @@ class Ui_MainWindow(object):
         self.BatteryBox.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.BatteryBox.setFrameShadow(QtWidgets.QFrame.Raised)
         self.BatteryBox.setObjectName("BatteryBox")
+
+        #Battery Label
+
         self.Battery = QtWidgets.QLabel(self.BatteryBox)
         self.Battery.setGeometry(QtCore.QRect(0, 40, 200, 100))
         font = QtGui.QFont()
@@ -287,6 +351,8 @@ class Ui_MainWindow(object):
 "}")
         self.Battery.setAlignment(QtCore.Qt.AlignCenter)
         self.Battery.setObjectName("Battery")
+
+
         self.BatteryLabel = QtWidgets.QLabel(self.BatteryBox)
         self.BatteryLabel.setGeometry(QtCore.QRect(0, 0, 200, 30))
         font = QtGui.QFont()
@@ -311,6 +377,9 @@ class Ui_MainWindow(object):
 "}")
         self.BatteryUnit.setAlignment(QtCore.Qt.AlignCenter)
         self.BatteryUnit.setObjectName("BatteryUnit")
+
+#Auxiliary Box
+
         self.AuxiliaryBox = QtWidgets.QFrame(self.centralwidget)
         self.AuxiliaryBox.setGeometry(QtCore.QRect(310, 375, 180, 85))
         self.AuxiliaryBox.setStyleSheet(".QFrame {\n"
@@ -322,22 +391,33 @@ class Ui_MainWindow(object):
         self.AuxiliaryBox.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.AuxiliaryBox.setFrameShadow(QtWidgets.QFrame.Raised)
         self.AuxiliaryBox.setObjectName("AuxiliaryBox")
+        
+        #Warning Indicator
+
         self.AuxiliaryWarning = QtWidgets.QLabel(self.AuxiliaryBox)
         self.AuxiliaryWarning.setGeometry(QtCore.QRect(75, 15, 30, 25))
         self.AuxiliaryWarning.setText("")
         self.AuxiliaryWarning.setTextFormat(QtCore.Qt.AutoText)
+        #Display Of Warning Indicator
         auxiliaryWarningSymbol = os.path.join(os.path.dirname(__file__), "IMG/Warning_OFF.png")
         self.AuxiliaryWarning.setPixmap(QtGui.QPixmap(auxiliaryWarningSymbol))
         self.AuxiliaryWarning.setScaledContents(True)
         self.AuxiliaryWarning.setObjectName("AuxiliaryWarning")
+        
+        #Charging Indicator
+
         self.AuxiliaryCharging = QtWidgets.QLabel(self.AuxiliaryBox)
         self.AuxiliaryCharging.setGeometry(QtCore.QRect(108, 15, 30, 25))
         self.AuxiliaryCharging.setText("")
         self.AuxiliaryCharging.setTextFormat(QtCore.Qt.AutoText)
+        #Display Of Charging Indicator
         auxiliaryChargingSymbol = os.path.join(os.path.dirname(__file__), "IMG/Charging_OFF.png")
         self.AuxiliaryCharging.setPixmap(QtGui.QPixmap(auxiliaryChargingSymbol))
         self.AuxiliaryCharging.setScaledContents(True)
         self.AuxiliaryCharging.setObjectName("AuxiliaryCharging")
+        
+        #Drive Gear Indicator
+
         self.GearD = QtWidgets.QLabel(self.AuxiliaryBox)
         self.GearD.setGeometry(QtCore.QRect(145, 45, 30, 30))
         font = QtGui.QFont()
@@ -350,6 +430,9 @@ class Ui_MainWindow(object):
 "}")
         self.GearD.setAlignment(QtCore.Qt.AlignCenter)
         self.GearD.setObjectName("GearD")
+        
+        #Ready Indicator
+
         self.READY = QtWidgets.QLabel(self.AuxiliaryBox)
         self.READY.setGeometry(QtCore.QRect(10, 45, 75, 30))
         font = QtGui.QFont()
@@ -362,6 +445,9 @@ class Ui_MainWindow(object):
 "}")
         self.READY.setAlignment(QtCore.Qt.AlignCenter)
         self.READY.setObjectName("READY")
+        
+        #Park Gear Indicator
+
         self.GearP = QtWidgets.QLabel(self.AuxiliaryBox)
         self.GearP.setGeometry(QtCore.QRect(85, 45, 30, 30))
         font = QtGui.QFont()
@@ -374,6 +460,9 @@ class Ui_MainWindow(object):
 "}")
         self.GearP.setAlignment(QtCore.Qt.AlignCenter)
         self.GearP.setObjectName("GearP")
+        
+        #Neutral Gear Indicator
+
         self.GearN = QtWidgets.QLabel(self.AuxiliaryBox)
         self.GearN.setGeometry(QtCore.QRect(125, 45, 30, 30))
         font = QtGui.QFont()
@@ -386,6 +475,9 @@ class Ui_MainWindow(object):
 "}")
         self.GearN.setAlignment(QtCore.Qt.AlignCenter)
         self.GearN.setObjectName("GearN")
+        
+        #Reverse Gear Indicator
+
         self.GearR = QtWidgets.QLabel(self.AuxiliaryBox)
         self.GearR.setGeometry(QtCore.QRect(105, 45, 30, 30))
         font = QtGui.QFont()
@@ -398,30 +490,45 @@ class Ui_MainWindow(object):
 "}")
         self.GearR.setAlignment(QtCore.Qt.AlignCenter)
         self.GearR.setObjectName("GearR")
+        
+        #Right Signal Indicator
+
         self.AuxiliarySignalRight = QtWidgets.QLabel(self.AuxiliaryBox)
         self.AuxiliarySignalRight.setGeometry(QtCore.QRect(140, 15, 30, 25))
         self.AuxiliarySignalRight.setText("")
         self.AuxiliarySignalRight.setTextFormat(QtCore.Qt.AutoText)
+        #Display Of Right Signal Indicator
         auxiliaryRightSignal = os.path.join(os.path.dirname(__file__), "IMG/RightSignal_OFF.png")
         self.AuxiliarySignalRight.setPixmap(QtGui.QPixmap(auxiliaryRightSignal))
         self.AuxiliarySignalRight.setScaledContents(True)
         self.AuxiliarySignalRight.setObjectName("AuxiliarySignalRight")
+        
+        #Left Signal Indicator
+
         self.AuxiliarySignalLeft = QtWidgets.QLabel(self.AuxiliaryBox)
         self.AuxiliarySignalLeft.setGeometry(QtCore.QRect(10, 15, 30, 25))
         self.AuxiliarySignalLeft.setText("")
         self.AuxiliarySignalLeft.setTextFormat(QtCore.Qt.AutoText)
+        #Display Of Left Signal Indicator
         auxiliaryLeftSignal = os.path.join(os.path.dirname(__file__), "IMG/LeftSignal_OFF.png")
         self.AuxiliarySignalLeft.setPixmap(QtGui.QPixmap(auxiliaryLeftSignal))
         self.AuxiliarySignalLeft.setScaledContents(True)
         self.AuxiliarySignalLeft.setObjectName("AuxiliarySignalLeft")
+        
+        #Lights Indicator
+
         self.AuxiliaryLights = QtWidgets.QLabel(self.AuxiliaryBox)
         self.AuxiliaryLights.setGeometry(QtCore.QRect(42, 15, 30, 25))
         self.AuxiliaryLights.setText("")
         self.AuxiliaryLights.setTextFormat(QtCore.Qt.AutoText)
+        #Display Of Lights Indicator
         auxiliaryLightsSymbol = os.path.join(os.path.dirname(__file__), "IMG/Lights_OFF.png")
         self.AuxiliaryLights.setPixmap(QtGui.QPixmap(auxiliaryLightsSymbol))
         self.AuxiliaryLights.setScaledContents(True)
         self.AuxiliaryLights.setObjectName("AuxiliaryLights")
+
+#Background and Logos
+
         self.Background = QtWidgets.QFrame(self.centralwidget)
         self.Background.setGeometry(QtCore.QRect(0, 0, 800, 480))
         self.Background.setStyleSheet("")
@@ -450,6 +557,9 @@ class Ui_MainWindow(object):
         self.ECT_logo.setPixmap(QtGui.QPixmap(ect_logo))
         self.ECT_logo.setScaledContents(True)
         self.ECT_logo.setObjectName("ECT_logo")
+
+#Raise
+
         self.Background.raise_()
         self.MapBox.raise_()
         self.TimeBox.raise_()
@@ -464,6 +574,8 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+#Label Values
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
