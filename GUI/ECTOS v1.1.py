@@ -4,6 +4,11 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import os
 
+#Imports for Folium Map
+import folium
+from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout
+from PyQt5.QtWebEngineWidgets import QWebEngineView
+
 #Main Window
 
 class Ui_MainWindow(object):
@@ -16,6 +21,21 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName("centralwidget")
 
 #Map Box
+        
+        # Create a Folium map centered at the specified coordinates
+        self.m = folium.Map(location=[-8.899038249049422, 116.30608808971405], tiles="https://tile.jawg.io/jawg-matrix/{z}/{x}/{y}{r}.png?access-token=nm4WzOTm7wM4qUMqnODWo0aqcjbjCQqyskBxGFl0hU3YKZ7fRnUpwfpFo6XgK419", attr="Jawg_Matrix", zoom_start=15)
+
+        # Convert the Folium map to an HTML string
+        self.m.save('map.html')
+        with open('map.html', 'r') as f:
+            html = f.read()
+
+        # Create a QWebEngineView widget and set the HTML string as its content
+        self.webview = QWebEngineView()
+        self.webview.setHtml(html)
+
+        # Set the size of the QWebEngineView widget
+        self.webview.setGeometry(QtCore.QRect(0, 0, 350, 350))
 
         self.MapBox = QtWidgets.QFrame(self.centralwidget)
         self.MapBox.setGeometry(QtCore.QRect(225, 20, 350, 350))
@@ -27,7 +47,12 @@ class Ui_MainWindow(object):
 "}")
         self.MapBox.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.MapBox.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.MapBox.setContentsMargins(0, 0, 0, 0)
         self.MapBox.setObjectName("MapBox")
+
+        # Set the QWebEngineView widget as the central widget of the QFrame
+        self.MapBox.setLayout(QVBoxLayout(self.MapBox))
+        self.MapBox.layout().addWidget(self.webview)
 
 #Time Box
 
