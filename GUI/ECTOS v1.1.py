@@ -648,32 +648,37 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.Time.setText(_translate("MainWindow", "12:00:00 AM"))
+        self.Time.setText(_translate("MainWindow", "12:00:00 AM"))      ########## TIME
         self.TimeLabel.setText(_translate("MainWindow", "Time"))
-        self.Temp.setText(_translate("MainWindow", "75°C"))
+        self.Temp.setText(_translate("MainWindow", "75°C"))             ########## TEMPERATURE
         self.TempLabel.setText(_translate("MainWindow", "Temp"))
-        self.Humidity.setText(_translate("MainWindow", "50%"))
+        self.Humidity.setText(_translate("MainWindow", "50%"))          ########## HUMIDITY
         self.HumidityLabel.setText(_translate("MainWindow", "Humidity"))
-        self.Pressure.setText(_translate("MainWindow", "300hPa"))
+        self.Pressure.setText(_translate("MainWindow", "300hPa"))       ########## PRESSURE
         self.PressureLabel.setText(_translate("MainWindow", "Pressure"))
         self.AccelerationLabel.setText(_translate("MainWindow", "Acceleration"))
-        self.AccelerationX.setText(_translate("MainWindow", "X: 123"))
-        self.AccelerationY.setText(_translate("MainWindow", "Y: 234"))
-        self.AccelerationZ.setText(_translate("MainWindow", "Z: 345"))
+        self.AccelerationX.setText(_translate("MainWindow", "X: 123"))  #
+        self.AccelerationY.setText(_translate("MainWindow", "Y: 234"))  ########## XYZ ACCEL
+        self.AccelerationZ.setText(_translate("MainWindow", "Z: 345"))  #
         self.SpeedLabel.setText(_translate("MainWindow", "Speed"))
         self.SpeedUnit.setText(_translate("MainWindow", "km/h"))
-        self.Speed.setText(_translate("MainWindow", "100"))
-        self.Battery.setText(_translate("MainWindow", "100"))
+        self.Speed.setText(_translate("MainWindow", "100"))             ########## SPEED
+        self.Battery.setText(_translate("MainWindow", "100"))           ########## BATTERY
         self.BatteryLabel.setText(_translate("MainWindow", "Battery"))
         self.BatteryUnit.setText(_translate("MainWindow", "%"))
-        self.GearD.setText(_translate("MainWindow", "D"))
-        self.READY.setText(_translate("MainWindow", "READY"))
-        self.GearP.setText(_translate("MainWindow", "P"))
-        self.GearN.setText(_translate("MainWindow", "N"))
-        self.GearR.setText(_translate("MainWindow", "R"))
+        self.GearD.setText(_translate("MainWindow", "D"))               #
+        self.READY.setText(_translate("MainWindow", "READY"))           #
+        self.GearP.setText(_translate("MainWindow", "P"))               ########## just change color with its code above
+        self.GearN.setText(_translate("MainWindow", "N"))               #
+        self.GearR.setText(_translate("MainWindow", "R"))               #
 
 #Sensor Functions
-        
+
+def update_time():
+    current_time = time.strftime("%I:%M %p")    # Get current time
+    timelabel.config(text=current_time)  # Update label text with current time
+    timelabel.after(1000, update_label) 
+
 def read_dht11():
     max_attempts = 5
     for attempt in range(max_attempts):
@@ -700,7 +705,6 @@ def update_temperature_and_humidity():
         humiditylabel.config(text="N/A")
         print("Failed to read from DHT11 sensor after multiple attempts.")
     app.after(1000, update_temperature_and_humidity)
-
 
 def update_pressure():
     try: 
