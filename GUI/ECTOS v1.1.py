@@ -3,13 +3,56 @@
 #Imports for GUI
 from PyQt5 import QtCore, QtGui, QtWidgets
 import os
+import math
+import time
+import board
 
 #Imports for Folium Map
 import folium
 from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 
-#Main Window
+#Imports for BME280
+import smbus2
+import bme280
+
+#Imports for MPU6050
+import smbus
+
+#Import for DHT11
+import adafruit_dht
+from time import sleep
+DHT_PIN = board.D4
+dht_device = adafruit_dht.DHT11(board.D4)
+
+# Imports for NEO-6M GPS
+import serial
+import string
+import pynmea2
+
+# Initialize the bus for BME280s
+bus = smbus2.SMBus(1)  # Use the appropriate bus number
+address = 0x76  # BME280 default address
+calibration_params = bme280.load_calibration_params(bus, address)
+
+# Initialize MPU6050
+mpu6050_bus = smbus.SMBus(1)  # If it's the same physical bus as BME280, consider using just one bus variable
+Device_Address = 0x68  # MPU6050 device address
+# MPU6050 Registers
+PWR_MGMT_1 = 0x6B
+SMPLRT_DIV = 0x19
+CONFIG = 0x1A
+GYRO_CONFIG = 0x1B
+ACCEL_CONFIG = 0x1C
+INT_ENABLE = 0x38
+ACCEL_XOUT_H = 0x3B
+ACCEL_YOUT_H = 0x3D
+ACCEL_ZOUT_H = 0x3F
+GYRO_XOUT_H = 0x43
+GYRO_YOUT_H = 0x45
+GYRO_ZOUT_H = 0x47
+
+################################ Main Window #####################################
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -629,6 +672,105 @@ class Ui_MainWindow(object):
         self.GearN.setText(_translate("MainWindow", "N"))
         self.GearR.setText(_translate("MainWindow", "R"))
 
+#Sensor Functions
+        
+def read_dht11():
+    max_attempts = 5
+    for attempt in range(max_attempts):
+        try:
+            temperature_c = dht_device.temperature ################################  Temperature
+            humidity = dht_device.humidity ##################################  Humidity
+            if temperature_c is not None and humidity is not None:
+                return temperature_c, humidity
+        except Exception as e:
+            print('Sensor read failed:', str(e))
+            sleep(2)
+    return None, None
+
+def update_temperature_and_humidity():
+    """
+    Updates the GUI labels for temperature and humidity using readings from the DHT11 sensor.
+    """
+    temperature, humidity = read_dht11()
+    if temperature is not None and humidity is not None:
+        label5.config(text=f"{temperature}°C")
+        humiditylabel.config(text=f"{humidity}%")  #### Not needed anymore other than constant updating
+    else:
+        label5.config(text="N/A")
+        humiditylabel.config(text="N/A")
+        print("Failed to read from DHT11 sensor after multiple attempts.")
+    app.after(1000, update_temperature_and_humidity)
+
+
+def update_pressure():
+    try: 
+        bme_device = bme280.sample(bus, address, calibration_params)
+        global pressure
+        pressure = bme_device.pressure
+        format_pressure = "{:.3f}".format(pressure)  ####################### Pressure
+        app.after(1000, update_pressure)
+    except Exception as e:
+        print('Sensor read failed:', str(e)) 
+
+def update_speed(event=None): #In Progress
+    global speed
+
+    # magnitude = math.sqrt(sum(a**2 for a in speed))
+
+    # speed = magnitude
+
+    speed_str = speed
+
+def MPU_Init():
+    # Wake-up the MPU6050
+    bus.write_byte_data(Device_Address, PWR_MGMT_1, 0)
+    
+    # Write to sample rate register
+    bus.write_byte_data(Device_Address, SMPLRT_DIV, 7)
+    
+    # Write to power management register to wake up the MPU6050
+    bus.write_byte_data(Device_Address, PWR_MGMT_1, 1)
+    
+    # Write to Configuration register
+    bus.write_byte_data(Device_Address, CONFIG, 0)
+    
+    # Write to Gyro configuration register to set full-scale range
+    # Example: ±250 degrees/second (0x00)
+    bus.write_byte_data(Device_Address, GYRO_CONFIG, 0x00)
+    
+    # Write to Accel configuration register to set full-scale range
+    # Example: ±2g (0x00)
+    bus.write_byte_data(Device_Address, ACCEL_CONFIG, 0x00)
+    
+    # Write to interrupt enable register
+    bus.write_byte_data(Device_Address, INT_ENABLE, 1)
+
+def read_raw_data(addr):
+	high = bus.read_byte_data(Device_Address, addr)
+	low = bus.read_byte_data(Device_Address, addr+1)
+	value = ((high << 8) | low)
+	if(value > 32768):
+			value -= 65536
+	return value
+
+def read_accel(): # MPU6050
+    global accel, Ax, Ay, Az
+
+    acc_x = read_raw_data(ACCEL_XOUT_H)
+    acc_y = read_raw_data(ACCEL_YOUT_H)
+    acc_z = read_raw_data(ACCEL_ZOUT_H)
+
+    Ax = (acc_x/16384.0) 
+    Ay = (acc_y/16384.0) 
+    Az = (acc_z/16384.0) 
+    
+    #accel = math.sqrt(Ax**2 + Ay**2 + Az**2)
+
+    #formatted_accel = "{:.2f}".format(accel)
+    formatted_Ax = "{:.1f}".format(Ax)
+    formatted_Ay = "{:.1f}".format(Ay)  ####################### XYZ acceleration
+    formatted_Az = "{:.1f}".format(Az)
+    app.after(1000, read_accel)
 
 if __name__ == "__main__":
     import sys
@@ -638,3 +780,10 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
+
+    update_speed()
+    update_temperature_and_humidity()
+    update_pressure()           ## I dont know
+    MPU_Init()
+    read_accel()
+    app.mainloop()
