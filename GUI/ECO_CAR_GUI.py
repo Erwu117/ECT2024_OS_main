@@ -5,6 +5,9 @@ import tkintermapview
 import time
 import board
 
+#Imports for logging
+import csv
+
 #Imports for BME280
 import smbus2
 import bme280
@@ -182,7 +185,15 @@ def read_accel(): # MPU6050
     Azlabel.config(text=f"{formatted_Az}m/s²")
     app.after(1000, read_accel)
 
-
+# Data Logging
+def logging():
+    filename = "data_log.csv"
+    with open(filename, 'a', newline='') as file:
+        writer = csv.writer(file)
+        while True:
+            writer.writerow([current_time])
+            writer.writerow([speed, tachometer, accel])
+            time.sleep(1)
 
 def update_batt(event=None):
     global speed2
@@ -252,6 +263,7 @@ def dim2():
     global glow_after_id2
     glow_after_id2 = canvas2.after(1000, glow2)  
 def update_label():
+    global current_time
     current_time = time.strftime("%I:%M %p")    # Get current time
     timelabel.config(text=current_time)  # Update label text with current time
     timelabel.after(1000, update_label) 
